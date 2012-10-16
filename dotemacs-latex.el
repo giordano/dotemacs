@@ -1,4 +1,33 @@
-;; configurazioni che hanno a che fare con LaTeX
+;;; dotemacs-latex.el --- My GNU Emacs configuration
+;;
+;; Copyright (c) 2012 Mosè Giordano
+;;
+;; Author: Mosè Giordano
+
+;; This file is not part of GNU Emacs.
+
+;;; Commentary:
+
+;; LaTeX relatex customizations.
+
+;;; License:
+
+;; This program is free software; you can redistribute it and/or modify it under
+;; the terms of the GNU General Public License as published by the Free Software
+;; Foundation; either version 3 of the License, or (at your option) any later
+;; version.
+;;
+;; This program is distributed in the hope that it will be useful, but WITHOUT
+;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+;; FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+;; details.
+;;
+;; You should have received a copy of the GNU General Public License along with
+;; GNU Emacs; see the file COPYING. If not, write to the Free Software
+;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+;; USA.
+
+;; Code:
 
 (eval-after-load "tex"
   '(progn
@@ -21,21 +50,21 @@
       (lambda ()
 	(TeX-run-style-hooks "amsmath")))
      (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t))
-     (setq LaTeX-clean-intermediate-suffixes (quote ("\\.aux" "\\.bbl" "\\.bcf" "\\.blg" "\\.brf" "\\.fot" "\\.glo" "\\.gls" "\\.idx" "\\.ilg" "\\.ind" "\\.lof" "\\.log" "\\.lot" "\\.nav" "\\.out" "\\.snm" "\\.toc" "\\.url" "\\.synctex\\.gz" "\\.tex~" "\\.run\\.xml")))
-     (setq LaTeX-fill-break-at-separators (quote ({ } \[ \\\( \\\) \\\[ \\\])))
-     (setq LaTeX-indent-environment-list (quote (("verbatim" current-indentation) ("verbatim*" current-indentation) ("array") ("displaymath") ("eqnarray") ("eqnarray*") ("equation") ("equation*") ("picture") ("tabbing") ("table") ("table*") ("tabular") ("tabular*") ("lstlisting" current-indentation))))
-     (setq LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting" "Verbatim")))
-     (setq TeX-PDF-mode t)
-     (setq TeX-macro-global (quote ("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/" "/usr/local/texlive/2012/texmf-dist/tex/")))
-     (setq TeX-newline-function (quote newline-and-indent))
-     (setq TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "xdg-open") (output-html "xdg-open"))))
-     (setq TeX-auto-save t)
-     (setq TeX-parse-self t)
-     (setq-default TeX-master nil)
-     (setq LaTeX-always-use-Biber t)
-     (setq reftex-plug-into-AUCTeX t)
-     (setq reftex-label-alist '(AMSTeX))
-     (setq TeX-electric-sub-and-superscript 1)))
+     (setq LaTeX-clean-intermediate-suffixes (quote ("\\.aux" "\\.bbl" "\\.bcf" "\\.blg" "\\.brf" "\\.fot" "\\.glo" "\\.gls" "\\.idx" "\\.ilg" "\\.ind" "\\.lof" "\\.log" "\\.lot" "\\.nav" "\\.out" "\\.snm" "\\.toc" "\\.url" "\\.synctex\\.gz" "\\.tex~" "\\.run\\.xml"))
+	   LaTeX-fill-break-at-separators (quote ({ } \[ \\\( \\\) \\\[ \\\]))
+	   LaTeX-indent-environment-list (quote (("verbatim" current-indentation) ("verbatim*" current-indentation) ("array") ("displaymath") ("eqnarray") ("eqnarray*") ("equation") ("equation*") ("picture") ("tabbing") ("table") ("table*") ("tabular") ("tabular*") ("lstlisting" current-indentation)))
+	   LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting" "Verbatim"))
+	   TeX-PDF-mode t
+	   TeX-macro-global (quote ("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/" "/usr/local/texlive/2012/texmf-dist/tex/"))
+	   TeX-newline-function (quote newline-and-indent)
+	   TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "xdg-open") (output-html "xdg-open")))
+	   TeX-auto-save t
+	   TeX-parse-self t
+	   LaTeX-always-use-Biber t
+	   reftex-plug-into-AUCTeX t
+	   reftex-label-alist '(AMSTeX)
+	   TeX-electric-sub-and-superscript 1)
+     (setq-default TeX-master nil)))
 
 ;; ;; Attiva di default la modalità LaTeX-math-mode per tutte le modalità di AUCTeX
 ;; (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
@@ -66,3 +95,5 @@
 ;; (list "chktex" (list "-q" "-v0" file-name)))
 ;; (add-hook 'LaTeX-mode-hook 'flymake-mode)
 ;; l'ho commentato perché preferisco attivarlo manualmente, è molto dispendioso
+
+;;; dotemacs-latex.el ends here
