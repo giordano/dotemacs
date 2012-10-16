@@ -102,7 +102,8 @@
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("technomancy" . "http://repo.technomancy.us/emacs/")))
+			 ("technomancy" . "http://repo.technomancy.us/emacs/")
+			 ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook

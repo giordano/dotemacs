@@ -2,25 +2,25 @@
 
 (require 'cl) ;; serve per Biber in AUCTeX
 (eval-after-load "tex"
-  '(TeX-add-style-hook
-   "bm"
-   (lambda ()
-     (TeX-add-symbols
-      '("bm" 1)))))
-(eval-after-load "tex"
-  '(TeX-add-style-hook
-   "tensor"
-   (lambda ()
-     (TeX-add-symbols
-      '("tensor" ["Before"] 2)
-      '("tensor*" ["Before"] 2)
-      '("indices" 1)
-      '("indices*" 1)))))
-(eval-after-load "tex"
-  '(TeX-add-style-hook
-    "kpfonts"
-    (lambda ()
-      (TeX-run-style-hooks "amsmath"))))
+  '(progn
+     (TeX-add-style-hook
+      "bm"
+      (lambda ()
+	(TeX-add-symbols
+	 '("bm" 1))))
+     (TeX-add-style-hook
+      "tensor"
+      (lambda ()
+	(TeX-add-symbols
+	 '("tensor" ["Before"] 2)
+	 '("tensor*" ["Before"] 2)
+	 '("indices" 1)
+	 '("indices*" 1))))
+     (TeX-add-style-hook
+      "kpfonts"
+      (lambda ()
+	(TeX-run-style-hooks "amsmath")))
+     (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t))))
 
 ;; Impostazioni per AUCTeX suggerite nel manuale
 (setq TeX-auto-save t)
@@ -63,6 +63,3 @@
 (setq reftex-plug-into-AUCTeX t)
 (setq reftex-label-alist '(AMSTeX))
 (setq TeX-electric-sub-and-superscript 1)
-
-(eval-after-load "tex"
-  '(add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t)))

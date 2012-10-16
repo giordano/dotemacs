@@ -1,6 +1,6 @@
 Miei file di configurazione per GNU Emacs.  Nel file di inizializzazione
 `~/.emacs` inserisci
-````elisp
+````Emacs Lisp
 (load "<PERCORSO>/dotemacs.el")
 (load "<PERCORSO>/dotemacs-latex.el")
 ````
