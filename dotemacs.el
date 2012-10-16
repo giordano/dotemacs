@@ -1,38 +1,18 @@
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(LaTeX-clean-intermediate-suffixes (quote ("\\.aux" "\\.bbl" "\\.bcf" "\\.blg" "\\.brf" "\\.fot" "\\.glo" "\\.gls" "\\.idx" "\\.ilg" "\\.ind" "\\.lof" "\\.log" "\\.lot" "\\.nav" "\\.out" "\\.snm" "\\.toc" "\\.url" "\\.synctex\\.gz" "\\.tex~" "\\.run\\.xml")))
- '(LaTeX-fill-break-at-separators (quote ({ } \[ \\\( \\\) \\\[ \\\])))
- '(LaTeX-indent-environment-list (quote (("verbatim" current-indentation) ("verbatim*" current-indentation) ("array") ("displaymath") ("eqnarray") ("eqnarray*") ("equation") ("equation*") ("picture") ("tabbing") ("table") ("table*") ("tabular") ("tabular*") ("lstlisting" current-indentation))))
- '(LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting" "Verbatim")))
- '(TeX-PDF-mode t)
- '(TeX-macro-global (quote ("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/" "/usr/local/texlive/2012/texmf-dist/tex/")))
- '(TeX-newline-function (quote newline-and-indent))
- '(TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "xdg-open") (output-html "xdg-open"))))
- '(c-report-syntactic-errors t)
- '(column-number-mode t)
- '(compilation-scroll-output t)
- '(display-time-mode t)
- '(fill-column 80)
- '(global-hl-line-mode t)
- '(global-linum-mode t)
- '(inhibit-startup-screen t)
- '(initial-buffer-choice nil)
- '(isearch-allow-scroll t)
- '(message-log-max 300)
- '(shell-command-completion-mode t)
- '(show-paren-mode t)
- '(size-indication-mode t)
- '(tabbar-mode t nil (tabbar))
- '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify))))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
+(setq column-number-mode t)
+(setq compilation-scroll-output t)
+(setq display-time-mode t)
+(setq fill-column 80)
+(setq global-hl-line-mode t)
+(setq global-linum-mode t)
+(setq inhibit-startup-screen t)
+(setq initial-buffer-choice nil)
+(setq isearch-allow-scroll t)
+(setq message-log-max 300)
+(setq shell-command-completion-mode t)
+(setq show-paren-mode t)
+(setq size-indication-mode t)
+(setq tabbar-mode t nil (tabbar))
+(setq text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
 
 ;; Aggiunge la cartella ~/.emacs.d/ al load-path di emacs
 (add-to-list 'load-path "~/.emacs.d/")
@@ -120,10 +100,11 @@
 (global-set-key (kbd "<f6>") 'whitespace-cleanup)
 (global-set-key (kbd "<f7>") 'eval-buffer)
 
-(add-hook 'c-mode-common-hook '(lambda () (c-toggle-auto-state 1)))
-(add-hook 'c-mode-common-hook '(lambda () (c-toggle-hungry-state 1)))
-(add-hook 'c-mode-common-hook '(lambda () (subword-mode 1)))
-
+(add-hook 'c-mode-common-hook '(lambda ()
+				 (c-toggle-auto-state 1)
+				 (c-toggle-hungry-state 1)
+				 (subword-mode 1)
+				 (setq c-report-syntactic-errors t)))
 (delete-selection-mode t)
 
 ;; vedi https://twiki.cern.ch/twiki/bin/view/CDS/EmacsTips
@@ -136,4 +117,4 @@
       version-control t)       ; use versioned backups
 (setq visible-bell t)
 
-(load-file "~/Documenti/sito/sito.el")
+(load "~/Documenti/sito/sito")
