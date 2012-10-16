@@ -1,18 +1,23 @@
-(setq column-number-mode t)
-(setq compilation-scroll-output t)
-(setq display-time-mode t)
-(setq fill-column 80)
-(setq global-hl-line-mode t)
-(setq global-linum-mode t)
-(setq inhibit-startup-screen t)
-(setq initial-buffer-choice nil)
-(setq isearch-allow-scroll t)
-(setq message-log-max 300)
-(setq shell-command-completion-mode t)
-(setq show-paren-mode t)
-(setq size-indication-mode t)
-(setq tabbar-mode t nil (tabbar))
-(setq text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(compilation-scroll-output t)
+ '(display-time-mode t)
+ '(fill-column 80)
+ '(global-hl-line-mode t)
+ '(global-linum-mode t)
+ '(inhibit-startup-screen t)
+ '(initial-buffer-choice nil)
+ '(isearch-allow-scroll t)
+ '(message-log-max 300)
+ '(shell-command-completion-mode t)
+ '(show-paren-mode t)
+ '(size-indication-mode t)
+ '(tabbar-mode t nil (tabbar))
+ '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify))))
 
 ;; Aggiunge la cartella ~/.emacs.d/ al load-path di emacs
 (add-to-list 'load-path "~/.emacs.d/")
