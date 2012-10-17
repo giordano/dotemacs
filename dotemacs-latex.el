@@ -50,14 +50,30 @@
       (lambda ()
 	(TeX-run-style-hooks "amsmath")))
      (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t))
-     (setq LaTeX-clean-intermediate-suffixes (quote ("\\.aux" "\\.bbl" "\\.bcf" "\\.blg" "\\.brf" "\\.fot" "\\.glo" "\\.gls" "\\.idx" "\\.ilg" "\\.ind" "\\.lof" "\\.log" "\\.lot" "\\.nav" "\\.out" "\\.snm" "\\.toc" "\\.url" "\\.synctex\\.gz" "\\.tex~" "\\.run\\.xml"))
-	   LaTeX-fill-break-at-separators (quote ({ } \[ \\\( \\\) \\\[ \\\]))
-	   LaTeX-indent-environment-list (quote (("verbatim" current-indentation) ("verbatim*" current-indentation) ("array") ("displaymath") ("eqnarray") ("eqnarray*") ("equation") ("equation*") ("picture") ("tabbing") ("table") ("table*") ("tabular") ("tabular*") ("lstlisting" current-indentation)))
-	   LaTeX-verbatim-environments (quote ("verbatim" "verbatim*" "lstlisting" "Verbatim"))
+     (setq LaTeX-clean-intermediate-suffixes '("\\.aux" "\\.bbl" "\\.bcf" "\\.blg"
+					       "\\.brf" "\\.fdb_latexmk" "\\.fls"
+					       "\\.fot" "\\.glo" "\\.gls" "\\.idx"
+					       "\\.ilg" "\\.ind" "\\.lof" "\\.log"
+					       "\\.lot" "\\.nav" "\\.out" "\\.snm"
+					       "\\.synctex\\.gz" "\\.run\\.xml"
+					       "\\.tex~" "\\.toc" "\\.url")
+	   LaTeX-fill-break-at-separators '({ } \[ \\\( \\\) \\\[ \\\])
+	   LaTeX-indent-environment-list '(("verbatim" current-indentation)
+					   ("verbatim*" current-indentation)
+					   ("lstlisting" current-indentation)
+					   ("array") ("displaymath")
+					   ("eqnarray") ("eqnarray*")
+					   ("equation") ("equation*")
+					   ("picture") ("tabbing") ("table")
+					   ("table*") ("tabular") ("tabular*"))
+	   LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting" "Verbatim")
 	   TeX-PDF-mode t
-	   TeX-macro-global (quote ("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/" "/usr/local/texlive/2012/texmf-dist/tex/"))
-	   TeX-newline-function (quote newline-and-indent)
-	   TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "xdg-open") (output-html "xdg-open")))
+	   TeX-macro-global '("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/"
+			      "/usr/local/texlive/2012/texmf-dist/tex/")
+	   TeX-newline-function 'newline-and-indent
+	   TeX-view-program-selection '(((output-dvi style-pstricks) "dvips and gv")
+					(output-dvi "xdvi") (output-pdf "xdg-open")
+					(output-html "xdg-open"))
 	   TeX-auto-save t
 	   TeX-parse-self t
 	   LaTeX-always-use-Biber t
