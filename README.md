@@ -6,5 +6,6 @@ Nel file di inizializzazione `~/.emacs` inserisci
 ````Lisp
 (load "<PERCORSO>/dotemacs")
 (load "<PERCORSO>/dotemacs-latex")
+(load "<PERCORSO>/dotemacs-laptop")
 ````
 per caricare i file di configurazione desiderati.

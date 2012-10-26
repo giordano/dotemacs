@@ -68,8 +68,18 @@
 (ac-config-default)
 ;; Aggiungo alcune altre modalità a quelle in cui usare di default
 ;; `auto-complete-mode'
-(add-to-list 'ac-modes 'latex-mode)
 (ac-flyspell-workaround)
+
+;; vedi http://code.google.com/p/ac-math/
+(require 'ac-math)
+(add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of {{{latex-mode}}}
+(defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+  (setq ac-sources
+	(append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+		ac-sources))
+  )
+(add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup)
+
 
 ;; ;; Vedi https://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/ Per il
 ;; ;; momento non ho intenzione di usare il server quindi commento
@@ -93,7 +103,7 @@
 (global-set-key (kbd "<C-prior>") 'previous-buffer)
 (global-set-key (kbd "M-<f3>") 'open-buffer-path)
 (global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "<f6>") 'whitespace-cleanup)
+(global-set-key (kbd "<f6>") 'whitespace-cleanup) ;; oppure `delete-trailing-whitespace'
 (global-set-key (kbd "<f7>") 'eval-buffer)
 
 ;; Apre i file con estensione `.m' con `matlab-mode'

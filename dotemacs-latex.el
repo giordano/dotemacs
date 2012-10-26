@@ -34,6 +34,11 @@
      (require 'cl) ;; serve per Biber in AUCTeX
      (TeX-global-PDF-mode 1)
      (TeX-add-style-hook
+      "mhchem"
+      (lambda ()
+	(TeX-add-symbols
+	 '("ce"  1))))
+     (TeX-add-style-hook
       "tensor"
       (lambda ()
 	(TeX-add-symbols
@@ -56,6 +61,7 @@
 	   LaTeX-fill-break-at-separators '({ } \[ \\\( \\\) \\\[ \\\])
 	   LaTeX-indent-environment-list '(("verbatim" current-indentation)
 					   ("verbatim*" current-indentation)
+					   ("Verbatim" current-indentation)
 					   ("lstlisting" current-indentation)
 					   ("array") ("displaymath")
 					   ("eqnarray") ("eqnarray*")
@@ -63,11 +69,13 @@
 					   ("picture") ("tabbing") ("table")
 					   ("table*") ("tabular") ("tabular*"))
 	   LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting" "Verbatim")
+	   LaTeX-verbatim-macros-with-braces '("url")
 	   TeX-macro-global '("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/"
 			      "/usr/local/texlive/2012/texmf-dist/tex/")
 	   TeX-newline-function 'newline-and-indent
-	   TeX-view-program-selection '(((output-dvi style-pstricks) "dvips and gv")
-					(output-dvi "xdvi") (output-pdf "xdg-open")
+	   TeX-view-program-selection '(((output-dvi style-pstricks) "xdg-open")
+					(output-dvi "xdg-open")
+					(output-pdf "xdg-open")
 					(output-html "xdg-open"))
 	   TeX-auto-save t
 	   TeX-parse-self t
