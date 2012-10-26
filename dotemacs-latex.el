@@ -8,7 +8,7 @@
 
 ;;; Commentary:
 
-;; LaTeX relatex customizations.
+;; LaTeX related customizations.
 
 ;;; License:
 
@@ -34,11 +34,6 @@
      (require 'cl) ;; serve per Biber in AUCTeX
      (TeX-global-PDF-mode 1)
      (TeX-add-style-hook
-      "mhchem"
-      (lambda ()
-	(TeX-add-symbols
-	 '("ce"  1))))
-     (TeX-add-style-hook
       "tensor"
       (lambda ()
 	(TeX-add-symbols
@@ -46,10 +41,6 @@
 	 '("tensor*" ["Before"] 2)
 	 '("indices" 1)
 	 '("indices*" 1))))
-     (TeX-add-style-hook
-      "kpfonts"
-      (lambda ()
-	(TeX-run-style-hooks "amsmath")))
      (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t))
      (setq LaTeX-clean-intermediate-suffixes '("\\.aux" "\\.bbl" "\\.bcf" "\\.blg"
 					       "\\.brf" "\\.fdb_latexmk" "\\.fls"
