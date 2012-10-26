@@ -32,11 +32,7 @@
 (eval-after-load "tex"
   '(progn
      (require 'cl) ;; serve per Biber in AUCTeX
-     (TeX-add-style-hook
-      "bm"
-      (lambda ()
-	(TeX-add-symbols
-	 '("bm" 1))))
+     (TeX-global-PDF-mode 1)
      (TeX-add-style-hook
       "tensor"
       (lambda ()
@@ -67,7 +63,6 @@
 					   ("picture") ("tabbing") ("table")
 					   ("table*") ("tabular") ("tabular*"))
 	   LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting" "Verbatim")
-	   TeX-PDF-mode t
 	   TeX-macro-global '("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/"
 			      "/usr/local/texlive/2012/texmf-dist/tex/")
 	   TeX-newline-function 'newline-and-indent
@@ -101,7 +96,7 @@
 	     (LaTeX-math-mode)
 	     ;; Modalità per evidenziare le parentesi corrispondenti in LaTeX.
 	     ;; http://centaur.maths.qmw.ac.uk/emacs/files/latex-paren.el
-	     (require 'latex-paren)
+	     ;; (require 'latex-paren)
 	     (turn-on-reftex)))
 
 ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/

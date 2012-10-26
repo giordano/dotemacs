@@ -32,7 +32,13 @@
 (add-to-list 'load-path "~/.emacs.d/")
 (require 'gnuplot)
 (require 'git)
-(load "~/Documenti/sito/sito")
+
+;; dopo aver caricato `org-mode' carico `org-publish' e gli eventuali file di
+;; configurazione dei progetti in giro per il sistema
+(eval-after-load "org"
+  '(progn
+     (require 'org-publish)
+     (load "~/Documenti/sito/sito")))
 
 (setq inhibit-startup-screen t ; nasconde la schermata di avvio
       isearch-allow-scroll t
@@ -65,7 +71,8 @@
 (add-to-list 'ac-modes 'latex-mode)
 (ac-flyspell-workaround)
 
-;; non ricordo a cosa serva (forse ha a che fare con emacsclient)
+;; ;; Vedi https://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/ Per il
+;; ;; momento non ho intenzione di usare il server quindi commento
 ;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
 ;; Funzione per aprire il file manager nella cartella in cui è salvato il
@@ -102,7 +109,7 @@
 ;; (semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
 ;; (global-srecode-minor-mode 1)       ; Enable template insertion menu
 
-;; mandare mail funzionante
+;; ;; invio di email (funzionante)
 ;; (setq send-mail-function 'smtpmail-send-it
 ;;       message-send-mail-function 'smtpmail-send-it
 ;;       smtpmail-starttls-credentials
@@ -115,15 +122,15 @@
 ;;       smtpmail-debug-info t)
 ;; (require 'smtpmail)
 
-;; Attiva `flyspell' per tutti i file \O/
+;; ;; Attiva `flyspell' per tutti i file \O/
 ;; (add-hook 'find-file-hook 'flyspell-mode)
 
 ;; (require 'package)
-(setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
-			 ("gnu" . "http://elpa.gnu.org/packages/")
-			 ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("technomancy" . "http://repo.technomancy.us/emacs/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")))
+;; (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
+;; 			 ("gnu" . "http://elpa.gnu.org/packages/")
+;; 			 ("marmalade" . "http://marmalade-repo.org/packages/")
+;; 			 ("technomancy" . "http://repo.technomancy.us/emacs/")
+;; 			 ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook
