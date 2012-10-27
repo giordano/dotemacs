@@ -41,6 +41,18 @@
 	 '("tensor*" ["Before"] 2)
 	 '("indices" 1)
 	 '("indices*" 1))))
+     ;; per latexmk vedi
+     ;; http://lists.gnu.org/archive/html/auctex/2012-10/msg00031.html
+     (add-to-list 'TeX-expand-list
+		  '("%(-PDF)"
+		    (lambda ()
+		      (if (and (not TeX-Omega-mode)
+			       (or TeX-PDF-mode TeX-DVI-via-PDFTeX))
+			  "-pdf" "-dvi"))))
+     (add-to-list 'TeX-command-list
+		  '("Latexmk" "latexmk %(-PDF) %s"
+		    TeX-run-TeX nil t
+		    :help "Run Latexmk on file to build everything."))
      (add-to-list 'TeX-command-list '("Make" "make" TeX-run-command nil t))
      (setq LaTeX-clean-intermediate-suffixes '("\\.aux" "\\.bbl" "\\.bcf" "\\.blg"
 					       "\\.brf" "\\.fdb_latexmk" "\\.fls"
