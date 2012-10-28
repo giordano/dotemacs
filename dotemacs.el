@@ -29,6 +29,20 @@
 
 ;; Code:
 
+(when (>= emacs-major-version 24)
+  ;; non mi piace il font di default di Emacs 24
+  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10"))
+  ;; generalmente nei terminali ho lo sfondo nero, quindi quando Emacs viene
+  ;; avviato in un terminale carico un tema adatto
+  (unless window-system
+    (load-theme 'manoj-dark))
+  ;; aggiungo altri repository da cui scaricare pacchetti
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+			   ("ELPA" . "http://tromey.com/elpa/")
+			   ("marmalade" . "http://marmalade-repo.org/packages/")
+			   ("technomancy" . "http://repo.technomancy.us/emacs/")
+			   ("melpa" . "http://melpa.milkbox.net/packages/"))))
+
 (add-to-list 'load-path "~/.emacs.d/")
 (require 'gnuplot)
 (require 'git)
@@ -55,7 +69,7 @@
 (show-paren-mode 1) ; evidenzia le parentesi corrispondenti
 (size-indication-mode 1) ; mostra la dimensione del buffer nella mode line
 (setq text-mode-hook  '(turn-on-auto-fill text-mode-hook-identify))
-(delete-selection-mode 1) ; permette di cancellare una regione con il backspace
+(delete-selection-mode 1) ; il testo inserito sostituisce la regione selezionata
 
 ;; Autocompletamento
 ;; (global-auto-complete-mode t)
@@ -121,12 +135,6 @@
 
 ;; ;; Attiva `flyspell' per tutti i file \O/
 ;; (add-hook 'find-file-hook 'flyspell-mode)
-
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			 ("ELPA" . "http://tromey.com/elpa/")
-			 ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("technomancy" . "http://repo.technomancy.us/emacs/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook
