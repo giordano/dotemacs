@@ -117,7 +117,7 @@
 	     ;; http://centaur.maths.qmw.ac.uk/emacs/files/latex-paren.el
 	     ;; (require 'latex-paren)
 	     (turn-on-reftex)
-	     (add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup)))
+	     (ac-latex-mode-setup)))
 
 ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
 ;; (require 'flymake)

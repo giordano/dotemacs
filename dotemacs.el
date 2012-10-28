@@ -44,8 +44,6 @@
 			   ("melpa" . "http://melpa.milkbox.net/packages/"))))
 
 (add-to-list 'load-path "~/.emacs.d/")
-(require 'gnuplot)
-(require 'git)
 
 (eval-after-load "org-publish"
   (load "~/Documenti/sito/sito"))
@@ -109,8 +107,6 @@
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
-;; Apre i file con estensione `.gnuplot' con `gnuplot-mode'
-(add-to-list 'auto-mode-alist '("\\.gnuplot$" . gnuplot-mode))
 ;; Apre i file con estensione `.md' con `markdown-mode'
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
