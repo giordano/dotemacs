@@ -33,12 +33,8 @@
 (require 'gnuplot)
 (require 'git)
 
-;; dopo aver caricato `org-mode' carico `org-publish' e gli eventuali file di
-;; configurazione dei progetti in giro per il sistema
-(eval-after-load "org"
-  '(progn
-     (require 'org-publish)
-     (load "~/Documenti/sito/sito")))
+(eval-after-load "org-publish"
+  (load "~/Documenti/sito/sito"))
 
 (setq inhibit-startup-screen t ; nasconde la schermata di avvio
       isearch-allow-scroll t
@@ -63,23 +59,14 @@
 
 ;; Autocompletamento
 ;; (global-auto-complete-mode t)
+(add-to-list 'load-path "~/.emacs.d/elpa/popup-20121020.1203/")
+(add-to-list 'load-path "~/.emacs.d/elpa/auto-complete-20121022.2254/")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete-20121022.2254/dict")
 (ac-config-default)
 ;; Aggiungo alcune altre modalità a quelle in cui usare di default
 ;; `auto-complete-mode'
 (ac-flyspell-workaround)
-
-;; vedi http://code.google.com/p/ac-math/
-(require 'ac-math)
-(add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of {{{latex-mode}}}
-(defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
-  (setq ac-sources
-	(append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-		ac-sources))
-  )
-(add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup)
-
 
 ;; ;; Vedi https://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/ Per il
 ;; ;; momento non ho intenzione di usare il server quindi commento
@@ -135,12 +122,11 @@
 ;; ;; Attiva `flyspell' per tutti i file \O/
 ;; (add-hook 'find-file-hook 'flyspell-mode)
 
-;; (require 'package)
-;; (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
-;; 			 ("gnu" . "http://elpa.gnu.org/packages/")
-;; 			 ("marmalade" . "http://marmalade-repo.org/packages/")
-;; 			 ("technomancy" . "http://repo.technomancy.us/emacs/")
-;; 			 ("melpa" . "http://melpa.milkbox.net/packages/")))
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+			 ("ELPA" . "http://tromey.com/elpa/")
+			 ("marmalade" . "http://marmalade-repo.org/packages/")
+			 ("technomancy" . "http://repo.technomancy.us/emacs/")
+			 ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook

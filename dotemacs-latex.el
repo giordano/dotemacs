@@ -86,7 +86,15 @@
 	   reftex-plug-into-AUCTeX t
 	   reftex-label-alist '(AMSTeX)
 	   TeX-electric-sub-and-superscript 1)
-     (setq-default TeX-master nil)))
+     (setq-default TeX-master nil)
+     ;; vedi http://code.google.com/p/ac-math/
+     (require 'ac-math)
+     (add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of {{{latex-mode}}}
+     (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+       (setq ac-sources
+	     (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+		     ac-sources))
+       )))
 
 ;; ;; Attiva di default la modalità LaTeX-math-mode per tutte le modalità di AUCTeX
 ;; (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
@@ -108,7 +116,8 @@
 	     ;; Modalità per evidenziare le parentesi corrispondenti in LaTeX.
 	     ;; http://centaur.maths.qmw.ac.uk/emacs/files/latex-paren.el
 	     ;; (require 'latex-paren)
-	     (turn-on-reftex)))
+	     (turn-on-reftex)
+	     (add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup)))
 
 ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
 ;; (require 'flymake)
