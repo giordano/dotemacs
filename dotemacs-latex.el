@@ -80,6 +80,8 @@
 					(output-dvi "xdg-open")
 					(output-pdf "xdg-open")
 					(output-html "xdg-open"))
+	   TeX-debug-bad-boxes t ; visualizza numero bad boxes
+	   TeX-debug-warnings t ; visualizza numero warnings
 	   TeX-auto-save t
 	   TeX-parse-self t
 	   LaTeX-always-use-Biber t
