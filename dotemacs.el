@@ -102,7 +102,7 @@
 (global-set-key (kbd "<C-prior>") 'previous-buffer)
 (global-set-key (kbd "M-<f3>") 'open-buffer-path)
 (global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "<f6>") 'whitespace-cleanup) ;; oppure `delete-trailing-whitespace'
+(global-set-key (kbd "<f6>") 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key (kbd "<f7>") 'eval-buffer)
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
