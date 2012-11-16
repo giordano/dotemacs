@@ -105,6 +105,10 @@
 (global-set-key (kbd "<f6>") 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key (kbd "<f7>") 'eval-buffer)
 
+;; disable C-z on X11 sessions
+(when window-system
+  (global-unset-key "\C-z"))
+
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
 ;; Apre i file con estensione `.md' con `markdown-mode'
