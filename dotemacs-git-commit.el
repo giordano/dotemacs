@@ -32,10 +32,17 @@
 ;; Code:
 
 (add-to-list 'load-path "~/.emacs.d/") ;; cartella in cui si trova git-commit.el
-(turn-on-auto-fill)
 (setq-default fill-column 72)
 (column-number-mode)
+(setq backup-by-copying t      ; don't clobber symlinks
+      backup-directory-alist
+      '(("." . "~/.saves"))    ; don't litter my fs tree
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)       ; use versioned backups
 (require 'cl) ;; serve per `git-commit'
 (require 'git-commit)
+(add-hook 'git-commit-mode-hook 'turn-on-auto-fill)
 
 ;;; dotemacs-git-commit.el ends here
