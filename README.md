@@ -10,3 +10,10 @@ Nel file di inizializzazione `~/.emacs` inserisci
 (load "<PERCORSO>/dotemacs-laptop")
 ````
 per caricare i file di configurazione desiderati.
+
+Imposta Emacs come editor di testo per i commit di git con il comando
+````shell
+git config --global core.editor "emacs -Q -l <PERCORSO>/dotemacs-git-commit.el"
+````
+In questo modo verrà caricato solo il file `dotemacs-git-commit.el` che richiede
+la minor mode `git-commit-mode`.
