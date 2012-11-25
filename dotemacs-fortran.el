@@ -44,13 +44,13 @@
 	f90-do-indent 2
 	f90-if-indent 2
 	f90-program-indent 2
-	f90-type-indent 2)
-  (add-hook 'f90-mode-hook
-	    '(lambda ()
-	       (local-set-key (kbd "RET") 'reindent-then-newline-and-indent)
-	       (f90-add-imenu-menu)
-	       (turn-on-auto-fill)
-	       (abbrev-mode 1))))
+	f90-type-indent 2))
+(add-hook 'f90-mode-hook
+	  '(lambda ()
+	     (local-set-key (kbd "RET") 'reindent-then-newline-and-indent)
+	     (f90-add-imenu-menu)
+	     (turn-on-auto-fill)
+	     (abbrev-mode 1)))
 
 (eval-after-load "fortran"
   (setq fortran-do-indent 2
@@ -58,10 +58,10 @@
 	fortran-continuation-indent 4
 	fortran-line-number-indent 4
 	fortran-continuation-string "&"
-	fortran-blink-matching-if t)
-  (add-hook 'fortran-mode-hook
-	    '(lambda()
-	       (turn-on-auto-fill)
-	       (abbrev-mode 1))))
+	fortran-blink-matching-if t))
+(add-hook 'fortran-mode-hook
+	  '(lambda()
+	     (turn-on-auto-fill)
+	     (abbrev-mode 1)))
 
 ;;; dotemacs-fortran.el ends here
