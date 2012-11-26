@@ -43,6 +43,11 @@
 			   ("technomancy" . "http://repo.technomancy.us/emacs/")
 			   ("melpa" . "http://melpa.milkbox.net/packages/"))))
 
+(when window-system ;; nelle sessioni X11...
+  (global-unset-key (kbd "<C-z>")) ;; ...disabilita C-z...
+  (global-hl-line-mode 1)          ;; ...ed evidenzia la riga corrente
+  )
+
 (add-to-list 'load-path "~/.emacs.d/")
 
 (eval-after-load "org-publish"
@@ -61,7 +66,6 @@
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga
-(global-hl-line-mode 1) ; evidenzia la riga corrente
 (global-linum-mode 1) ; mostra i numeri di riga sulla sinistra
 (shell-command-completion-mode 1)
 (show-paren-mode 1) ; evidenzia le parentesi corrispondenti
@@ -104,10 +108,6 @@
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "<f6>") 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key (kbd "<f7>") 'eval-buffer)
-
-;; disable C-z on X11 sessions
-(when window-system
-  (global-unset-key "\C-z"))
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
