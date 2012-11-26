@@ -43,9 +43,10 @@
 			   ("technomancy" . "http://repo.technomancy.us/emacs/")
 			   ("melpa" . "http://melpa.milkbox.net/packages/"))))
 
-(when window-system ;; nelle sessioni X11...
-  (global-unset-key (kbd "<C-z>")) ;; ...disabilita C-z...
-  (global-hl-line-mode 1)          ;; ...ed evidenzia la riga corrente
+;; nelle sessioni X11...
+(when window-system
+  (global-unset-key (kbd "C-z")) ;; ...disabilita C-z...
+  (global-hl-line-mode 1)        ;; ...ed evidenzia la riga corrente
   )
 
 (add-to-list 'load-path "~/.emacs.d/")
@@ -108,6 +109,10 @@
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "<f6>") 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key (kbd "<f7>") 'eval-buffer)
+;; associo RET (default: `newline') a `reindent-then-newline-and-indent', se non
+;; ti piace il fatto che reindenti la riga attuale prima di andare a capo
+;; sostituisci con `newline-and-indent'
+(global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))

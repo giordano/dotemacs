@@ -34,20 +34,17 @@
 ;; `fixed-form'), la seconda ai file con estensioni `.f90' e `.f95'
 ;; (convenzionalmente considerati `free-form').
 
-;; uso la modalità `f90-mode' anche per i file con estensione `.f'
-(add-to-list 'auto-mode-alist '("\\.f\\'" . f90-mode))
 ;; Per informazioni su `f90' vedi http://jblevins.org/notes/f90-mode
 ;; Vedi se il pacchetto `f90-interface-browser' può essere utile
 (eval-after-load "f90"
-  (setq f90-associate-indent 2
-	f90-continuation-indent 4
-	f90-do-indent 2
+  (setq f90-do-indent 2
 	f90-if-indent 2
+	f90-continuation-indent 4
+	f90-associate-indent 2
 	f90-program-indent 2
 	f90-type-indent 2))
 (add-hook 'f90-mode-hook
 	  '(lambda ()
-	     (local-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 	     (f90-add-imenu-menu)
 	     (turn-on-auto-fill)
 	     (abbrev-mode 1)))
@@ -57,7 +54,6 @@
 	fortran-if-indent 2
 	fortran-continuation-indent 4
 	fortran-line-number-indent 4
-	fortran-continuation-string "&"
 	fortran-blink-matching-if t))
 (add-hook 'fortran-mode-hook
 	  '(lambda()
