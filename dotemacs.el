@@ -41,7 +41,10 @@
 			   ("ELPA" . "http://tromey.com/elpa/")
 			   ("marmalade" . "http://marmalade-repo.org/packages/")
 			   ("technomancy" . "http://repo.technomancy.us/emacs/")
-			   ("melpa" . "http://melpa.milkbox.net/packages/"))))
+			   ("melpa" . "http://melpa.milkbox.net/packages/"))
+	;; in Emacs 24 vengono affiancate le etichette alle icone della barra
+	;; degli strumenti, preferisco avere solo le icone
+	tool-bar-style 'image))
 
 ;; nelle sessioni X11...
 (when window-system
