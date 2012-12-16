@@ -117,6 +117,12 @@
 ;; sostituisci con `newline-and-indent'
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
+;; Nella modalità `makefile' la funzione `reindent-then-newline-and-indent' non
+;; si comporta come mi aspetto, allora associo `RET' alla semplice
+;; `newline'
+(add-hook 'makefile-mode-hook (lambda ()
+				(local-set-key (kbd "RET") 'newline)))
+
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
 ;; Apre i file con estensione `.md' con `markdown-mode'
