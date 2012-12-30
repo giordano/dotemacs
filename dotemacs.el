@@ -34,7 +34,7 @@
   (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10"))
   ;; generalmente nei terminali ho lo sfondo nero, quindi quando Emacs viene
   ;; avviato in un terminale carico un tema adatto
-  (unless window-system
+  (unless (display-graphic-p)
     (load-theme 'manoj-dark))
   ;; aggiungo altri repository da cui scaricare pacchetti
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -47,7 +47,7 @@
 	tool-bar-style 'image))
 
 ;; nelle sessioni X11...
-(when window-system
+(when (display-graphic-p)
   (global-unset-key (kbd "C-z")) ;; ...disabilita C-z...
   (global-hl-line-mode 1)        ;; ...ed evidenzia la riga corrente
   )
