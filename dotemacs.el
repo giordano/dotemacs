@@ -160,6 +160,14 @@
 				 (subword-mode 1)
 				 (setq c-report-syntactic-errors t)))
 
+(add-hook 'emacs-lisp-mode-hook
+	  '(lambda ()
+	     ;; Controlla il bilanciamento delle parentesi dopo il salvataggio.
+	     ;; Se vuoi che il controllo venga fatto prima del salvataggio
+	     ;; sostituisci `local-write-file-hook' a `after-save-hook'.
+	     (add-hook 'after-save-hook
+		       'check-parens)))
+
 ;; vedi https://twiki.cern.ch/twiki/bin/view/CDS/EmacsTips
 (setq backup-by-copying t      ; don't clobber symlinks
       backup-directory-alist
