@@ -72,6 +72,7 @@
 					   ("equation") ("equation*")
 					   ("picture") ("tabbing") ("table")
 					   ("table*") ("tabular") ("tabular*"))
+	   LaTeX-top-caption-list '("table")
 	   LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting" "Verbatim")
 	   LaTeX-verbatim-macros-with-braces '("url")
 	   TeX-macro-global '("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/"
