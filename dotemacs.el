@@ -112,6 +112,7 @@
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "<f6>") 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key (kbd "<f7>") 'eval-buffer)
+(global-set-key (kbd "<f8>") 'check-parens)
 ;; associo RET (default: `newline') a `reindent-then-newline-and-indent', se non
 ;; ti piace il fatto che reindenti la riga attuale prima di andare a capo
 ;; sostituisci con `newline-and-indent'
@@ -159,14 +160,6 @@
 				 (c-toggle-hungry-state 1)
 				 (subword-mode 1)
 				 (setq c-report-syntactic-errors t)))
-
-(add-hook 'emacs-lisp-mode-hook
-	  '(lambda ()
-	     ;; Controlla il bilanciamento delle parentesi dopo il salvataggio.
-	     ;; Se vuoi che il controllo venga fatto prima del salvataggio
-	     ;; sostituisci `local-write-file-hook' a `after-save-hook'.
-	     (add-hook 'after-save-hook
-		       'check-parens)))
 
 ;; vedi https://twiki.cern.ch/twiki/bin/view/CDS/EmacsTips
 (setq backup-by-copying t      ; don't clobber symlinks
