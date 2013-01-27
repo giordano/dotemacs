@@ -1,6 +1,6 @@
 ;;; dotemacs.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012 Mosè Giordano
+;; Copyright (c) 2012-2013 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 

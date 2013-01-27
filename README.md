@@ -8,6 +8,7 @@ Nel file di inizializzazione `~/.emacs` inserisci
 (load "<PERCORSO>/dotemacs-fortran")
 (load "<PERCORSO>/dotemacs-latex")
 (load "<PERCORSO>/dotemacs-laptop")
+(load "<PERCORSO>/dotemacs-org")
 ````
 per caricare i file di configurazione desiderati.
 
