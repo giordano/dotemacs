@@ -37,4 +37,10 @@
 
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
+;; Suggested key bindings from Org manual
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
 ;;; dotemacs-org.el ends here
