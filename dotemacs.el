@@ -50,7 +50,18 @@
 (when (display-graphic-p)
   (global-unset-key (kbd "C-z")) ;; ...disabilita C-z...
   (global-hl-line-mode 1)        ;; ...ed evidenzia la riga corrente
-  )
+  ;;; Autocompletamento.  Globalmente: (global-auto-complete-mode t).
+  ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
+  ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
+  ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
+  (add-to-list 'load-path "~/.emacs.d/elpa/popup-20121020.1203/")
+  (add-to-list 'load-path "~/.emacs.d/elpa/auto-complete-20121022.2254/")
+  (require 'auto-complete-config)
+  (add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete-20121022.2254/dict")
+  (ac-config-default)
+  ;; Aggiungo alcune altre modalità a quelle in cui usare di default
+  ;; `auto-complete-mode'
+  (ac-flyspell-workaround))
 
 (add-to-list 'load-path "~/.emacs.d/")
 
@@ -76,17 +87,6 @@
 (size-indication-mode 1) ; mostra la dimensione del buffer nella mode line
 (setq text-mode-hook  '(turn-on-auto-fill text-mode-hook-identify))
 (delete-selection-mode 1) ; il testo inserito sostituisce la regione selezionata
-
-;; Autocompletamento
-;; (global-auto-complete-mode t)
-(add-to-list 'load-path "~/.emacs.d/elpa/popup-20121020.1203/")
-(add-to-list 'load-path "~/.emacs.d/elpa/auto-complete-20121022.2254/")
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete-20121022.2254/dict")
-(ac-config-default)
-;; Aggiungo alcune altre modalità a quelle in cui usare di default
-;; `auto-complete-mode'
-(ac-flyspell-workaround)
 
 ;; ;; Vedi https://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/ Per il
 ;; ;; momento non ho intenzione di usare il server quindi commento
@@ -118,12 +118,6 @@
 ;; sostituisci con `newline-and-indent'
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
-;; Nella modalità `makefile' la funzione `reindent-then-newline-and-indent' non
-;; si comporta come mi aspetto, allora associo `RET' alla semplice
-;; `newline'
-(add-hook 'makefile-mode-hook (lambda ()
-				(local-set-key (kbd "RET") 'newline)))
-
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
 ;; Apre i file con estensione `.md' con `markdown-mode'
@@ -131,7 +125,7 @@
 
 ;; Cedet. Per ora lo rimuovo
 ;; (load-file "/usr/share/emacs/site-lisp/cedet-common/cedet.el")
-(global-ede-mode 1)                    ; Enable the Project management system
+;; (global-ede-mode 1)                 ; Enable the Project management system
 ;; (semantic-load-enable-code-helpers) ; Enable prototype help and smart completion
 ;; (global-srecode-minor-mode 1)       ; Enable template insertion menu
 
@@ -151,15 +145,23 @@
 ;; ;; Attiva `flyspell' per tutti i file \O/
 ;; (add-hook 'find-file-hook 'flyspell-mode)
 
+;; Nella modalità `makefile' la funzione `reindent-then-newline-and-indent' non
+;; si comporta come mi aspetto, allora associo `RET' alla semplice
+;; `newline'
+(add-hook 'makefile-mode-hook
+	  '(lambda ()
+	     (local-set-key (kbd "RET") 'newline)))
+
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook
 	  'executable-make-buffer-file-executable-if-script-p)
 
-(add-hook 'c-mode-common-hook '(lambda ()
-				 (c-toggle-auto-state 1)
-				 (c-toggle-hungry-state 1)
-				 (subword-mode 1)
-				 (setq c-report-syntactic-errors t)))
+(add-hook 'c-mode-common-hook
+	  '(lambda ()
+	     (c-toggle-auto-state 1)
+	     (c-toggle-hungry-state 1)
+	     (subword-mode 1)
+	     (setq c-report-syntactic-errors t)))
 
 ;; vedi https://twiki.cern.ch/twiki/bin/view/CDS/EmacsTips
 (setq backup-by-copying t      ; don't clobber symlinks
