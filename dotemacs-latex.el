@@ -89,7 +89,8 @@
 	   LaTeX-always-use-Biber t
 	   reftex-plug-into-AUCTeX t
 	   reftex-label-alist '(AMSTeX)
-	   TeX-electric-sub-and-superscript 1)
+	   TeX-electric-sub-and-superscript 1
+	   TeX-math-close-single-dollar t)
      (setq-default TeX-master nil)
      (when (featurep 'auto-complete)
        ;; vedi http://code.google.com/p/ac-math/
