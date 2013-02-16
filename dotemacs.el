@@ -54,10 +54,10 @@
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
-  (add-to-list 'load-path "~/.emacs.d/elpa/popup-20121020.1203/")
-  (add-to-list 'load-path "~/.emacs.d/elpa/auto-complete-20121022.2254/")
+  (add-to-list 'load-path "~/.emacs.d/elpa/popup/")
+  (add-to-list 'load-path "~/.emacs.d/elpa/auto-complete/")
   (require 'auto-complete-config)
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete-20121022.2254/dict")
+  (add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete/dict")
   (ac-config-default)
   ;; Aggiungo alcune altre modalità a quelle in cui usare di default
   ;; `auto-complete-mode'
