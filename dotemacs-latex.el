@@ -99,7 +99,8 @@
        (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
 	 (setq ac-sources
 	       (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-		       ac-sources))))))
+		       ac-sources)))
+       (add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup))))
 
 ;; ;; Attiva di default la modalità LaTeX-math-mode per tutte le modalità di AUCTeX
 ;; (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
@@ -121,8 +122,7 @@
 	     ;; Modalità per evidenziare le parentesi corrispondenti in LaTeX.
 	     ;; http://centaur.maths.qmw.ac.uk/emacs/files/latex-paren.el
 	     ;; (require 'latex-paren)
-	     (turn-on-reftex)
-	     (ac-latex-mode-setup)))
+	     (turn-on-reftex)))
 
 ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
 ;; (require 'flymake)
