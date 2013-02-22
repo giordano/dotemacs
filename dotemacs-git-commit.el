@@ -31,7 +31,7 @@
 
 ;; Code:
 
-(add-to-list 'load-path "~/.emacs.d/") ;; cartella in cui si trova git-commit.el
+(add-to-list 'load-path user-emacs-directory) ;; cartella in cui si trova git-commit.el
 (setq-default fill-column 72)
 (column-number-mode)
 (setq backup-by-copying t      ; don't clobber symlinks

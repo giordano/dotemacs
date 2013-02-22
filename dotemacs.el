@@ -54,16 +54,16 @@
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
-  (add-to-list 'load-path "~/.emacs.d/elpa/popup/")
-  (add-to-list 'load-path "~/.emacs.d/elpa/auto-complete/")
+  (add-to-list 'load-path (concat user-emacs-directory "elpa/popup/"))
+  (add-to-list 'load-path (concat user-emacs-directory "elpa/auto-complete/"))
   (require 'auto-complete-config)
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete/dict")
+  (add-to-list 'ac-dictionary-directories (concat user-emacs-directory "elpa/auto-complete/dict"))
   (ac-config-default)
   ;; Aggiungo alcune altre modalità a quelle in cui usare di default
   ;; `auto-complete-mode'
   (ac-flyspell-workaround))
 
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path user-emacs-directory)
 
 (eval-after-load "org-publish"
   (load "~/Documenti/sito/sito"))
@@ -75,8 +75,8 @@
       ;; campanella "visiva" invece di quella sonora, in caso di errore
       visible-bell t
       ;; File dove salvare i punteggi dei giochi
-      tetris-score-file "~/.emacs.d/tetris-scores"
-      snake-score-file  "~/.emacs.d/snake-scores")
+      tetris-score-file (concat user-emacs-directory "tetris-scores")
+      snake-score-file (concat user-emacs-directory "snake-scores"))
 (tabbar-mode 1) ; attiva la visualizzazione delle schede
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
