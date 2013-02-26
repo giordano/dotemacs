@@ -65,9 +65,6 @@
 
 (add-to-list 'load-path user-emacs-directory)
 
-(eval-after-load "org-publish"
-  (load "~/Documenti/sito/sito"))
-
 (setq inhibit-startup-screen t ; nasconde la schermata di avvio
       isearch-allow-scroll t
       message-log-max 300  ; lunghezza del log dei messaggi in *Messages*

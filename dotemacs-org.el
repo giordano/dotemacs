@@ -29,7 +29,7 @@
 
 ;; Code:
 
-;; dal manuale di Org Mode
+;; From Org Mode manual
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-log-states)   ; turn off logging
@@ -42,5 +42,66 @@
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+
+(eval-after-load "org-publish"
+  (load "~/Documenti/sito/sito"))
+
+;;; Org Diary
+;; TODO: with an ARG, insert a different date.
+(defun org-insert-date-heading nil
+  "Insert lines of the type
+  * CURRENTYEAR				:YYYY:
+  ** CURRENTMONTHNAME CURRENTYEAR	:YYYYMM:
+  *** <TIMESTAMP>			:YYYYMMDD:
+  **** _
+and leaves the point under `_'.  Lines for current year, current
+month and time stamp are inserted only if they haven't been
+already inserted. (Note: searches only backward.)  It is assumed
+that point is in the correct place."
+  (interactive)
+  (end-of-line)
+  (if (save-excursion
+	;; If the current line contains only whitespaces...
+   	(re-search-backward "^[ \t]*$" (line-beginning-position) t))
+      ;; ...then, delete the line...
+      (delete-region (point) (line-beginning-position))
+    ;; ...else, insert a newline.
+    (insert "\n"))
+  (unless (save-excursion
+	    ;; Search bacward for lines of the type
+	    ;;   * CURRENT_YEAR	:YYYY:
+	    (re-search-backward
+	     (format-time-string "^\\*[ \t]+%Y[ \t]+:%Y:$") nil t))
+    ;; Insert the line
+    ;;   * CURRENT_YEAR	:YYYY:
+    (insert "* "
+	    (format-time-string "%Y\t\t\t:%Y:\n")))
+  (unless (save-excursion
+	    ;; Search bacward for lines of the type
+	    ;;   ** CURRENT_MONTH_NAME CURRENT_YEAR	:YYYYMM:
+	    (re-search-backward
+	     (concat "^\\*\\*[ \t]+"
+		     (calendar-month-name
+		      (string-to-number (format-time-string "%m")))
+		     (format-time-string "[ \t]+%Y[ \t]+:%Y%m:$")) nil t))
+    ;; Insert the line
+    ;;   ** CURRENT_MONTH_NAME CURRENT_YEAR	:YYYYMM:
+    (insert "** "
+	    (calendar-month-name
+	     (string-to-number (format-time-string "%m")))
+	    (format-time-string " %Y\t:%Y%m:\n")))
+  (unless (save-excursion
+	    ;; Search backward for lines of the type
+	    ;;   *** <TIME_STAMP>	:YYYYMMDD:
+	    (re-search-backward
+	     (format-time-string "^\\*\\*\\*[ \t]+<%Y-%m-%d.*>[ \t]+:%Y%m%d:")
+	     nil t))
+    ;; Insert the line
+    ;;   *** <TIME_STAMP>	:YYYYMMDD:
+    (insert "*** ")
+    (org-insert-time-stamp (current-time))
+    (insert (format-time-string "\t:%Y%m%d:\n")))
+  (insert "**** "))
+(global-set-key "\C-cd" 'org-insert-date-heading)
 
 ;;; dotemacs-org.el ends here
