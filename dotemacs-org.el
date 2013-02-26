@@ -47,60 +47,64 @@
   (load "~/Documenti/sito/sito"))
 
 ;;; Org Diary
-;; TODO: with an ARG, insert a different date.
-(defun org-insert-date-heading nil
+(defun org-insert-date-heading (&optional arg)
   "Insert lines of the type
-  * CURRENTYEAR				:YYYY:
-  ** CURRENTMONTHNAME CURRENTYEAR	:YYYYMM:
-  *** <TIMESTAMP>			:YYYYMMDD:
+  * YEAR		:YYYY:
+  ** MONTHNAME YEAR	:YYYYMM:
+  *** <TIMESTAMP>	:YYYYMMDD:
   **** _
-and leaves the point under `_'.  Lines for current year, current
+and leave point under `_'.  By default, use current date.  It is
+useful to write a simple diary.  Lines for current year, current
 month and time stamp are inserted only if they haven't been
 already inserted. (Note: searches only backward.)  It is assumed
-that point is in the correct place."
-  (interactive)
-  (end-of-line)
-  (if (save-excursion
-	;; If the current line contains only whitespaces...
-   	(re-search-backward "^[ \t]*$" (line-beginning-position) t))
-      ;; ...then, delete the line...
-      (delete-region (point) (line-beginning-position))
-    ;; ...else, insert a newline.
-    (insert "\n"))
-  (unless (save-excursion
-	    ;; Search bacward for lines of the type
-	    ;;   * CURRENT_YEAR	:YYYY:
-	    (re-search-backward
-	     (format-time-string "^\\*[ \t]+%Y[ \t]+:%Y:$") nil t))
-    ;; Insert the line
-    ;;   * CURRENT_YEAR	:YYYY:
-    (insert "* "
-	    (format-time-string "%Y\t\t\t:%Y:\n")))
-  (unless (save-excursion
-	    ;; Search bacward for lines of the type
-	    ;;   ** CURRENT_MONTH_NAME CURRENT_YEAR	:YYYYMM:
-	    (re-search-backward
-	     (concat "^\\*\\*[ \t]+"
-		     (calendar-month-name
-		      (string-to-number (format-time-string "%m")))
-		     (format-time-string "[ \t]+%Y[ \t]+:%Y%m:$")) nil t))
-    ;; Insert the line
-    ;;   ** CURRENT_MONTH_NAME CURRENT_YEAR	:YYYYMM:
-    (insert "** "
-	    (calendar-month-name
-	     (string-to-number (format-time-string "%m")))
-	    (format-time-string " %Y\t:%Y%m:\n")))
-  (unless (save-excursion
-	    ;; Search backward for lines of the type
-	    ;;   *** <TIME_STAMP>	:YYYYMMDD:
-	    (re-search-backward
-	     (format-time-string "^\\*\\*\\*[ \t]+<%Y-%m-%d.*>[ \t]+:%Y%m%d:")
-	     nil t))
-    ;; Insert the line
-    ;;   *** <TIME_STAMP>	:YYYYMMDD:
-    (insert "*** ")
-    (org-insert-time-stamp (current-time))
-    (insert (format-time-string "\t:%Y%m%d:\n")))
+that point is in the correct place.  If this command is called
+with a prefix argument, prompt for a different date."
+  (interactive "P")
+  (let (date)
+    (if arg
+	(setq date (org-time-string-to-time (org-read-date)))
+      (setq date (current-time)))
+    (end-of-line)
+    (if (save-excursion
+	  ;; If the current line contains only whitespaces...
+	  (re-search-backward "^[ \t]*$" (line-beginning-position) t))
+	;; ...then, delete the line...
+	(delete-region (point) (line-beginning-position))
+      ;; ...else, insert a newline.
+      (insert "\n"))
+    (unless (save-excursion
+	      ;; Search bacward for lines of the type
+	      ;;   * YEAR	:YYYY:
+	      (re-search-backward
+	       (format-time-string "^\\*[ \t]+%Y[ \t]+:%Y:$" date) nil t))
+      ;; Insert the line
+      ;;   * YEAR	:YYYY:
+      (insert (format-time-string "* %Y\t\t\t:%Y:\n" date)))
+    (unless (save-excursion
+	      ;; Search bacward for lines of the type
+	      ;;   ** MONTH_NAME YEAR	:YYYYMM:
+	      (re-search-backward
+	       (concat "^\\*\\*[ \t]+"
+		       (calendar-month-name
+			(string-to-number (format-time-string "%m" date)))
+		       (format-time-string "[ \t]+%Y[ \t]+:%Y%m:$" date)) nil t))
+      ;; Insert the line
+      ;;   ** MONTH_NAME YEAR	:YYYYMM:
+      (insert "** "
+	      (calendar-month-name
+	       (string-to-number (format-time-string "%m" date)))
+	      (format-time-string " %Y\t\t:%Y%m:\n" date)))
+    (unless (save-excursion
+	      ;; Search backward for lines of the type
+	      ;;   *** <TIME_STAMP>	:YYYYMMDD:
+	      (re-search-backward
+	       (format-time-string "^\\*\\*\\*[ \t]+<%Y-%m-%d.*>[ \t]+:%Y%m%d:" date)
+	       nil t))
+      ;; Insert the line
+      ;;   *** <TIME_STAMP>	:YYYYMMDD:
+      (insert "*** ")
+      (org-insert-time-stamp date)
+      (insert (format-time-string "\t:%Y%m%d:\n" date))))
   (insert "**** "))
 (global-set-key "\C-cd" 'org-insert-date-heading)
 
