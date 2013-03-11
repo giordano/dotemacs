@@ -149,6 +149,8 @@
 	  '(lambda ()
 	     (local-set-key (kbd "RET") 'newline)))
 
+(add-hook 'before-save-hook 'time-stamp)
+
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook
 	  'executable-make-buffer-file-executable-if-script-p)

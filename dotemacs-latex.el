@@ -86,7 +86,7 @@
 	   TeX-debug-warnings t ; visualizza numero warnings
 	   TeX-auto-save t
 	   TeX-parse-self t
-	   LaTeX-always-use-Biber t
+	   ;; LaTeX-always-use-Biber t
 	   reftex-plug-into-AUCTeX t
 	   reftex-label-alist '(AMSTeX)
 	   TeX-electric-sub-and-superscript 1
@@ -123,6 +123,7 @@
 	     ;; http://centaur.maths.qmw.ac.uk/emacs/files/latex-paren.el
 	     ;; (require 'latex-paren)
 	     (turn-on-reftex)))
+
 
 ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
 ;; (require 'flymake)
