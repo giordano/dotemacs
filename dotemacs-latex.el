@@ -27,20 +27,11 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-;; Code:
+;;; Code:
 
 (eval-after-load "tex"
   '(progn
-     (require 'cl) ;; serve per Biber in AUCTeX
      (TeX-global-PDF-mode 1)
-     (TeX-add-style-hook
-      "tensor"
-      (lambda ()
-	(TeX-add-symbols
-	 '("tensor" ["Before"] 2)
-	 '("tensor*" ["Before"] 2)
-	 '("indices" 1)
-	 '("indices*" 1))))
      ;; per latexmk vedi
      ;; http://lists.gnu.org/archive/html/auctex/2012-10/msg00031.html
      (add-to-list 'TeX-expand-list
@@ -55,43 +46,60 @@
 		    TeX-run-TeX nil t
 		    :help "Run Latexmk on file to build everything."))
      (add-to-list 'TeX-command-list '("Make" "make" TeX-run-TeX nil t))
-     (setq LaTeX-clean-intermediate-suffixes '("\\.aux" "\\.bbl" "\\.bcf" "\\.blg"
-					       "\\.brf" "\\.fdb_latexmk" "\\.fls"
-					       "\\.fot" "\\.glo" "\\.gls" "\\.idx"
-					       "\\.ilg" "\\.ind" "\\.lof" "\\.log"
-					       "\\.lot" "\\.nav" "\\.out" "\\.snm"
-					       "\\.synctex\\.gz" "\\.run\\.xml"
-					       "\\.tex~" "\\.toc" "\\.url")
-	   LaTeX-fill-break-at-separators '({ } \[ \\\( \\\) \\\[ \\\])
-	   LaTeX-indent-environment-list '(("verbatim" current-indentation)
-					   ("verbatim*" current-indentation)
-					   ("Verbatim" current-indentation)
-					   ("lstlisting" current-indentation)
-					   ("array") ("displaymath")
-					   ("eqnarray") ("eqnarray*")
-					   ("equation") ("equation*")
-					   ("picture") ("tabbing") ("table")
-					   ("table*") ("tabular") ("tabular*"))
-	   LaTeX-top-caption-list '("table")
-	   LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting" "Verbatim")
-	   LaTeX-verbatim-macros-with-braces '("url")
-	   TeX-macro-global '("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/"
+     (setq TeX-macro-global '("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/"
 			      "/usr/local/texlive/2012/texmf-dist/tex/")
 	   TeX-newline-function 'newline-and-indent
+	   TeX-debug-bad-boxes t
 	   TeX-view-program-selection '(((output-dvi style-pstricks) "xdg-open")
 					(output-dvi "xdg-open")
 					(output-pdf "xdg-open")
 					(output-html "xdg-open"))
-	   TeX-debug-bad-boxes t ; visualizza numero bad boxes
-	   TeX-debug-warnings t ; visualizza numero warnings
-	   TeX-auto-save t
-	   TeX-parse-self t
-	   ;; LaTeX-always-use-Biber t
-	   reftex-plug-into-AUCTeX t
-	   reftex-label-alist '(AMSTeX)
 	   TeX-electric-sub-and-superscript 1
-	   TeX-math-close-single-dollar t)
+	   TeX-math-close-single-dollar t
+	   TeX-debug-warnings t
+	   TeX-auto-save t
+	   TeX-parse-self t)
      (setq-default TeX-master nil)
+     (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
+     (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
+     (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
+     (add-hook 'TeX-mode-hook
+	       '(lambda ()
+		  (flyspell-mode)
+		  (turn-on-auto-fill)
+		  (turn-on-reftex)))))
+
+(eval-after-load "reftex-vars"
+  '(progn
+     (setq reftex-plug-into-AUCTeX t
+	   reftex-label-alist '(AMSTeX)
+	   reftex-bibliography-commands
+	   '("bibliography" "nobibliography" "addbibresource"))))
+
+(eval-after-load "latex"
+  '(progn
+     (TeX-add-style-hook
+      "tensor"
+      (lambda ()
+	(TeX-add-symbols
+	 '("tensor" ["Before"] 2)
+	 '("tensor*" ["Before"] 2)
+	 '("indices" 1)
+	 '("indices*" 1))))
+     (setq LaTeX-clean-intermediate-suffixes (append
+					      LaTeX-clean-intermediate-suffixes
+					      '("\\.fdb_latexmk" "\\.fls"))
+	   LaTeX-top-caption-list '("table"))
+     (add-hook 'LaTeX-mode-hook
+	       '(lambda ()
+		  (LaTeX-math-mode)))
+     ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
+     ;; (require 'flymake)
+     ;; (defun flymake-get-tex-args (file-name)
+     ;;  (list "pdflatex" (list "-file-line-error" "-draftmode" "-interaction=nonstopmode" file-name)))
+     ;; (list "chktex" (list "-q" "-v0" file-name)))
+     ;; (add-hook 'LaTeX-mode-hook 'flymake-mode)
+     ;; l'ho commentato perché preferisco attivarlo manualmente, è molto dispendioso
      (when (featurep 'auto-complete)
        ;; vedi http://code.google.com/p/ac-math/
        (require 'ac-math)
@@ -100,37 +108,44 @@
 	 (setq ac-sources
 	       (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
 		       ac-sources)))
-       (add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup))))
+       (add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup))
 
-;; ;; Attiva di default la modalità LaTeX-math-mode per tutte le modalità di AUCTeX
-;; (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
+     (defun LaTeX-find-file ()
+       "Find LaTeX file at point."
+       (interactive)
+       (if (executable-find "kpsewhich")
+	   (let* ((name (thing-at-point 'symbol))
+		  (extension (cond
+			      ((or (string-equal (TeX-current-macro)
+						 "documentclass")
+				   (string-equal (TeX-current-macro)
+						 "documentstyle")
+				   (string-equal (TeX-current-macro)
+						 "LoadClass")
+				   (string-equal (TeX-current-macro)
+						 "LoadClassWithOptions"))
+			       ".cls")
+			      ((or (string-equal (TeX-current-macro)
+						 "usepackage")
+				   (string-equal (TeX-current-macro)
+						 "RequirePackage")
+				   (string-equal (TeX-current-macro)
+						 "RequirePackageWithOptions"))
+			       ".sty")
+			      ((or (string-equal (TeX-current-macro) "include")
+				   (string-equal (TeX-current-macro) "input"))
+			       ".tex")))
+		  (file (replace-regexp-in-string
+			 "[\n\r]*" ""
+			 (shell-command-to-string
+			  (concat "kpsewhich " name extension)))))
+	     (if (zerop (length file))
+		 (message "No file found.")
+	       (find-file-other-window file)))
+	 (message "LaTeX-find-file requires kpsewhich.")))
+     (global-set-key (kbd "C-c f") 'LaTeX-find-file)))
 
-(autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
-(autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
-(autoload 'reftex-citation "reftex-cite" "Make citation" nil)
-
-(add-hook 'LaTeX-mode-hook
-	  '(lambda ()
-	     ;; Attiva automaticamente la correzione ortografica aprendo un
-	     ;; documento LaTeX.  Finalmente \O/
-	     (flyspell-mode)
-	     ;; Attiva la modalità con la quale un rigo non può essere più lungo
-	     ;; di `fill-column' caratteri
-	     (turn-on-auto-fill)
-	     ;; Attiva di default la modalità LaTeX-math-mode per la latex-mode
-	     (LaTeX-math-mode)
-	     ;; Modalità per evidenziare le parentesi corrispondenti in LaTeX.
-	     ;; http://centaur.maths.qmw.ac.uk/emacs/files/latex-paren.el
-	     ;; (require 'latex-paren)
-	     (turn-on-reftex)))
-
-
-;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
-;; (require 'flymake)
-;; (defun flymake-get-tex-args (file-name)
-;;  (list "pdflatex" (list "-file-line-error" "-draftmode" "-interaction=nonstopmode" file-name)))
-;; (list "chktex" (list "-q" "-v0" file-name)))
-;; (add-hook 'LaTeX-mode-hook 'flymake-mode)
-;; l'ho commentato perché preferisco attivarlo manualmente, è molto dispendioso
-
+(eval-after-load "preview"
+  '(progn
+     (add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)))
 ;;; dotemacs-latex.el ends here

@@ -37,27 +37,29 @@
 ;; Per informazioni su `f90' vedi http://jblevins.org/notes/f90-mode
 ;; Vedi se il pacchetto `f90-interface-browser' può essere utile
 (eval-after-load "f90"
-  (setq f90-do-indent 2
-	f90-if-indent 2
-	f90-continuation-indent 4
-	f90-associate-indent 2
-	f90-program-indent 2
-	f90-type-indent 2))
-(add-hook 'f90-mode-hook
-	  '(lambda ()
-	     (f90-add-imenu-menu)
-	     (turn-on-auto-fill)
-	     (abbrev-mode 1)))
+  '(progn
+     (setq f90-do-indent 2
+	   f90-if-indent 2
+	   f90-continuation-indent 4
+	   f90-associate-indent 2
+	   f90-program-indent 2
+	   f90-type-indent 2)
+     (add-hook 'f90-mode-hook
+	       '(lambda ()
+		  (f90-add-imenu-menu)
+		  (turn-on-auto-fill)
+		  (abbrev-mode 1)))))
 
 (eval-after-load "fortran"
-  (setq fortran-do-indent 2
-	fortran-if-indent 2
-	fortran-continuation-indent 4
-	fortran-line-number-indent 4
-	fortran-blink-matching-if t))
-(add-hook 'fortran-mode-hook
-	  '(lambda()
-	     (turn-on-auto-fill)
-	     (abbrev-mode 1)))
+  '(progn
+     (setq fortran-do-indent 2
+	   fortran-if-indent 2
+	   fortran-continuation-indent 4
+	   fortran-line-number-indent 4
+	   fortran-blink-matching-if t)
+     (add-hook 'fortran-mode-hook
+	       '(lambda ()
+		  (turn-on-auto-fill)
+		  (abbrev-mode 1)))))
 
 ;;; dotemacs-fortran.el ends here

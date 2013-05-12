@@ -29,26 +29,25 @@
 
 ;; Code:
 
-;; From Org Mode manual
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+(eval-after-load "org"
+  '(progn
+     ;; From Org Mode manual
+     (defun org-summary-todo (n-done n-not-done)
+       "Switch entry to DONE when all subentries are done, to TODO otherwise."
+       (let (org-log-done org-log-states)   ; turn off logging
+	 (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+     (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
-;; Suggested key bindings from Org manual
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
+     ;; Suggested key bindings from Org manual
+     (global-set-key "\C-cl" 'org-store-link)
+     (global-set-key "\C-cc" 'org-capture)
+     (global-set-key "\C-ca" 'org-agenda)
+     (global-set-key "\C-cb" 'org-iswitchb)
 
-(eval-after-load "org-publish"
-  (load "~/Documenti/sito/sito"))
-
-;;; Org Diary
-(defun org-insert-date-heading (&optional arg)
-  "Insert lines of the type
+     ;;; Org Diary
+     (defun org-insert-date-heading (&optional arg)
+       "Insert lines of the type
   * YEAR		:YYYY:
   ** MONTHNAME YEAR	:YYYYMM:
   *** <TIMESTAMP>	:YYYYMMDD:
@@ -59,53 +58,56 @@ month and time stamp are inserted only if they haven't been
 already inserted. (Note: searches only backward.)  It is assumed
 that point is in the correct place.  If this command is called
 with a prefix argument, prompt for a different date."
-  (interactive "P")
-  (let (date)
-    (if arg
-	(setq date (org-time-string-to-time (org-read-date)))
-      (setq date (current-time)))
-    (end-of-line)
-    (if (save-excursion
-	  ;; If the current line contains only whitespaces...
-	  (re-search-backward "^[ \t]*$" (line-beginning-position) t))
-	;; ...then, delete the line...
-	(delete-region (point) (line-beginning-position))
-      ;; ...else, insert a newline.
-      (insert "\n"))
-    (unless (save-excursion
-	      ;; Search bacward for lines of the type
-	      ;;   * YEAR	:YYYY:
-	      (re-search-backward
-	       (format-time-string "^\\*[ \t]+%Y[ \t]+:%Y:$" date) nil t))
-      ;; Insert the line
-      ;;   * YEAR	:YYYY:
-      (insert (format-time-string "* %Y\t\t\t:%Y:\n" date)))
-    (unless (save-excursion
-	      ;; Search bacward for lines of the type
-	      ;;   ** MONTH_NAME YEAR	:YYYYMM:
-	      (re-search-backward
-	       (concat "^\\*\\*[ \t]+"
-		       (calendar-month-name
-			(string-to-number (format-time-string "%m" date)))
-		       (format-time-string "[ \t]+%Y[ \t]+:%Y%m:$" date)) nil t))
-      ;; Insert the line
-      ;;   ** MONTH_NAME YEAR	:YYYYMM:
-      (insert "** "
-	      (calendar-month-name
-	       (string-to-number (format-time-string "%m" date)))
-	      (format-time-string " %Y\t\t:%Y%m:\n" date)))
-    (unless (save-excursion
-	      ;; Search backward for lines of the type
-	      ;;   *** <TIME_STAMP>	:YYYYMMDD:
-	      (re-search-backward
-	       (format-time-string "^\\*\\*\\*[ \t]+<%Y-%m-%d.*>[ \t]+:%Y%m%d:" date)
-	       nil t))
-      ;; Insert the line
-      ;;   *** <TIME_STAMP>	:YYYYMMDD:
-      (insert "*** ")
-      (org-insert-time-stamp date)
-      (insert (format-time-string "\t:%Y%m%d:\n" date))))
-  (insert "**** "))
-(global-set-key "\C-cd" 'org-insert-date-heading)
+       (interactive "P")
+       (let (date)
+	 (if arg
+	     (setq date (org-time-string-to-time (org-read-date)))
+	   (setq date (current-time)))
+	 (end-of-line)
+	 (if (save-excursion
+	       ;; If the current line contains only whitespaces...
+	       (re-search-backward "^[ \t]*$" (line-beginning-position) t))
+	     ;; ...then, delete the line...
+	     (delete-region (point) (line-beginning-position))
+	   ;; ...else, insert a newline.
+	   (insert "\n"))
+	 (unless (save-excursion
+		   ;; Search bacward for lines of the type
+		   ;;   * YEAR	:YYYY:
+		   (re-search-backward
+		    (format-time-string "^\\*[ \t]+%Y[ \t]+:%Y:$" date) nil t))
+	   ;; Insert the line
+	   ;;   * YEAR	:YYYY:
+	   (insert (format-time-string "* %Y\t\t\t:%Y:\n" date)))
+	 (unless (save-excursion
+		   ;; Search bacward for lines of the type
+		   ;;   ** MONTH_NAME YEAR	:YYYYMM:
+		   (re-search-backward
+		    (concat "^\\*\\*[ \t]+"
+			    (calendar-month-name
+			     (string-to-number (format-time-string "%m" date)))
+			    (format-time-string "[ \t]+%Y[ \t]+:%Y%m:$" date)) nil t))
+	   ;; Insert the line
+	   ;;   ** MONTH_NAME YEAR	:YYYYMM:
+	   (insert "** "
+		   (calendar-month-name
+		    (string-to-number (format-time-string "%m" date)))
+		   (format-time-string " %Y\t\t:%Y%m:\n" date)))
+	 (unless (save-excursion
+		   ;; Search backward for lines of the type
+		   ;;   *** <TIME_STAMP>	:YYYYMMDD:
+		   (re-search-backward
+		    (format-time-string "^\\*\\*\\*[ \t]+<%Y-%m-%d.*>[ \t]+:%Y%m%d:" date)
+		    nil t))
+	   ;; Insert the line
+	   ;;   *** <TIME_STAMP>	:YYYYMMDD:
+	   (insert "*** ")
+	   (org-insert-time-stamp date)
+	   (insert (format-time-string "\t:%Y%m%d:\n" date))))
+       (insert "**** "))
+     (global-set-key "\C-cd" 'org-insert-date-heading)))
+
+(eval-after-load "org-publish"
+  '(load "~/Documenti/sito/sito"))
 
 ;;; dotemacs-org.el ends here

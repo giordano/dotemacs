@@ -41,7 +41,7 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t)       ; use versioned backups
-(require 'cl) ;; serve per `git-commit'
+(require 'cl-lib) ;; serve per `git-commit'
 (require 'git-commit)
 (add-hook 'git-commit-mode-hook 'turn-on-auto-fill)
 
