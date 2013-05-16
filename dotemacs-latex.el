@@ -136,7 +136,7 @@
 				   (string-equal (TeX-current-macro) "input"))
 			       ".tex")))
 		  (file (replace-regexp-in-string
-			 "[\n\r]*" ""
+			 "[\n\r]*\\'" ""
 			 (shell-command-to-string
 			  (concat "kpsewhich " name extension)))))
 	     (if (zerop (length file))
