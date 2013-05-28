@@ -27,7 +27,7 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-;; Code:
+;;; Code:
 
 (eval-after-load "org"
   '(progn
@@ -105,7 +105,9 @@ with a prefix argument, prompt for a different date."
 	   (org-insert-time-stamp date)
 	   (insert (format-time-string "\t:%Y%m%d:\n" date))))
        (insert "**** "))
-     (global-set-key "\C-cd" 'org-insert-date-heading)))
+     (define-key org-mode-map "\C-cd" 'org-insert-date-heading)
+
+     (define-key org-mode-map "'" 'mg-insert-typographic-apostrophe)))
 
 (eval-after-load "org-publish"
   '(load "~/Documenti/sito/sito"))

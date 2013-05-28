@@ -27,7 +27,7 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-;; Code:
+;;; Code:
 
 ;; Ci sono due modalità in Emacs per il Fortran: `fortran' e `f90'.  La prima è
 ;; associata ai file con estensione `.f' e `.for' (convenzionalmente considerati
@@ -36,6 +36,7 @@
 
 ;; Per informazioni su `f90' vedi http://jblevins.org/notes/f90-mode
 ;; Vedi se il pacchetto `f90-interface-browser' può essere utile
+
 (eval-after-load "f90"
   '(progn
      (setq f90-do-indent 2

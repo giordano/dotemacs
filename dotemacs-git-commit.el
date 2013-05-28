@@ -29,7 +29,7 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-;; Code:
+;;; Code:
 
 (add-to-list 'load-path user-emacs-directory) ;; cartella in cui si trova git-commit.el
 (setq-default fill-column 72)

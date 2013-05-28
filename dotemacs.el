@@ -27,7 +27,7 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-;; Code:
+;;; Code:
 
 (when (>= emacs-major-version 24)
   ;; non mi piace il font di default di Emacs 24
@@ -133,11 +133,29 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (interactive)
   (shell-command (concat "xdg-open " default-directory)))
 
+(defvar mg-typographic-apostrophe t
+  "If non-nil, insert \"’\" pressing \"'\".")
+(defun mg-insert-typographic-apostrophe (&optional arg)
+  "Insert typographic apostrophe sign \"’\".
+
+With raw \\[universal-argument] prefix or if
+`mg-typographic-apostrophe' is non-nil, insert \"'\".  With
+optional ARG, insert that many \"'\"."
+  (interactive "P")
+  (cond
+   ((or (not mg-typographic-apostrophe) (and arg (listp arg)))
+    (insert "'"))
+   (arg
+    (insert (make-string (prefix-numeric-value arg) ?')))
+   (t
+    (insert "’"))))
+(define-key text-mode-map "'" 'mg-insert-typographic-apostrophe)
+
 ;; Keybindings impostati da me: C-next (Ctrl + Pag ↓) per andare avanti nei
 ;; buffer, C-prior (Ctrl + Pag ↑) per tornare indietro
 (global-set-key (kbd "<C-next>") 'next-buffer)
 (global-set-key (kbd "<C-prior>") 'previous-buffer)
-(global-set-key (kbd "<f4>") 'open-buffer-path)
+(global-set-key (kbd "<M-f5>") 'open-buffer-path)
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "<f6>") 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key (kbd "<f7>") 'eval-buffer)
