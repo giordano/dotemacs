@@ -1,4 +1,4 @@
-;;; dotemacs-laptop.el --- My GNU Emacs configuration
+;;; dotemacs-notebook.el --- My GNU Emacs configuration
 ;;
 ;; Copyright (c) 2012 Mosè Giordano
 ;;
@@ -8,7 +8,7 @@
 
 ;;; Commentary:
 
-;; Laptop related customizations.
+;; Notebook related customizations.
 
 ;;; License:
 
@@ -27,9 +27,9 @@
 ;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 ;; USA.
 
-;; Code:
+;;; Code:
 
 (setq battery-mode-line-format " [Battery status: %c mAh, %B, %p%%. AC status: %L. Temp.: %d°C]")
 (display-battery-mode 1)
 
-;;; dotemacs-laptop.el ends here
+;;; dotemacs-notebook.el ends here
