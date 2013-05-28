@@ -38,7 +38,10 @@
   ;; generalmente nei terminali ho lo sfondo nero, quindi quando Emacs viene
   ;; avviato in un terminale carico un tema adatto
   (unless (display-graphic-p)
-    (load-theme 'manoj-dark))
+    (load-theme 'tsdh-dark)
+    (custom-theme-set-faces
+     'tsdh-dark
+     '(linum ((t (:foreground "black" :background "lightgrey"))))))
   (eval-after-load "package"
     ;; aggiungo altri repository da cui scaricare pacchetti
     '(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
