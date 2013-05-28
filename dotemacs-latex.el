@@ -58,7 +58,9 @@
 	   TeX-math-close-single-dollar t
 	   TeX-debug-warnings t
 	   TeX-auto-save t
-	   TeX-parse-self t)
+	   TeX-parse-self t
+	   LaTeX-command-style
+	   '(("" "%(PDF)%(latex) -file-line-error %S%(PDFout)")))
      (setq-default TeX-master nil)
      (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
      (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
@@ -67,7 +69,30 @@
 	       '(lambda ()
 		  (flyspell-mode)
 		  (turn-on-auto-fill)
-		  (turn-on-reftex)))))
+		  (turn-on-reftex)))
+     (defun mg-TeX-kpsewhich-find-file (&optional name)
+       "Visit file associated to NAME searching for it with kpsewhich.
+If NAME is nil prompt for a file name.  If there is an active
+region, use it as initial input.  When it is called with
+\\[universal-argument] prefix, visit file in another window, in
+the current one otherwise."
+       (interactive)
+       (if (executable-find "kpsewhich")
+	   (let* ((fun (if current-prefix-arg 'find-file-other-window 'find-file))
+		  (default-directory (TeX-master-directory))
+		  (name (or name (TeX-read-string
+				  "File name: "
+				  (if (TeX-active-mark)
+				      (buffer-substring-no-properties
+				       (region-beginning) (region-end))))))
+		  (file (replace-regexp-in-string
+			 "[\n\r]*\\'" ""
+			 (shell-command-to-string (concat "kpsewhich " name)))))
+	     (if (and (not (zerop (length file))) (file-exists-p file))
+		 (funcall fun file)
+	       (message (concat "File " name " not found."))))
+	 (message "Kpsewhich not available.")))
+     (define-key TeX-mode-map (kbd "C-c k") 'mg-TeX-kpsewhich-find-file)))
 
 (eval-after-load "reftex-vars"
   '(progn
@@ -110,40 +135,53 @@
 		       ac-sources)))
        (add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup))
 
-     (defun LaTeX-find-file ()
-       "Find LaTeX file at point."
+     ;; From an original idea of John Wickerson and a first simple
+     ;; implementation of David Carlisle: http://tex.stackexchange.com/q/113376
+     (defun mg-LaTeX-find-file-at-point ()
+       "Visit LaTeX file searching for it with kpsewhich.
+File basename is guessed from text around point and its extension
+is guessed from current macro.  When it is called with
+\\[universal-argument] prefix, visit file in another window, in
+the current one otherwise.
+
+See also `mg-TeX-kpsewhich-find-file'."
        (interactive)
-       (if (executable-find "kpsewhich")
-	   (let* ((name (thing-at-point 'symbol))
-		  (extension (cond
-			      ((or (string-equal (TeX-current-macro)
-						 "documentclass")
-				   (string-equal (TeX-current-macro)
-						 "documentstyle")
-				   (string-equal (TeX-current-macro)
-						 "LoadClass")
-				   (string-equal (TeX-current-macro)
-						 "LoadClassWithOptions"))
-			       ".cls")
-			      ((or (string-equal (TeX-current-macro)
-						 "usepackage")
-				   (string-equal (TeX-current-macro)
-						 "RequirePackage")
-				   (string-equal (TeX-current-macro)
-						 "RequirePackageWithOptions"))
-			       ".sty")
-			      ((or (string-equal (TeX-current-macro) "include")
-				   (string-equal (TeX-current-macro) "input"))
-			       ".tex")))
-		  (file (replace-regexp-in-string
-			 "[\n\r]*\\'" ""
-			 (shell-command-to-string
-			  (concat "kpsewhich " name extension)))))
-	     (if (zerop (length file))
-		 (message "No file found.")
-	       (find-file-other-window file)))
-	 (message "LaTeX-find-file requires kpsewhich.")))
-     (global-set-key (kbd "C-c f") 'LaTeX-find-file)))
+       (let* ((file-name-regexp "-~/A-Za-z0-9_.$#%:+")
+	      ;; Get filename at point.
+	      (name
+	       ;; Check whether character at point is a valid file name
+	       ;; character.
+	       (if (string-match (concat "[" file-name-regexp "]")
+				 (string (char-after)))
+		   (save-excursion
+		     (skip-chars-backward file-name-regexp)
+		     (looking-at (concat "\\([" file-name-regexp "]+\\)"))
+		     (TeX-match-buffer 1))))
+	      ;; Get current macro once.
+	      (current-macro (TeX-current-macro))
+	      ;; Guess file extension based on current macro.
+	      (extension (cond
+			  ((or (equal "usepackage" current-macro)
+			       (equal "RequirePackage" current-macro)
+			       (equal "RequirePackageWithOptions" current-macro))
+			   ".sty")
+			  ((or (equal "documentclass" current-macro)
+			       (equal "documentstyle" current-macro)
+			       (equal "LoadClass" current-macro)
+			       (equal "LoadClassWithOptions" current-macro))
+			   ".cls")
+			  ((equal "include" current-macro) ".tex")
+			  ((equal "input" current-macro)
+			   ;; `input' macro accepts a file name with extension, in
+			   ;; that case use an empty but non-nil extension.
+			   (if (and name (file-name-extension name)) "" ".tex"))
+			  ((equal "bibliography" current-macro) ".bib")
+			  ((equal "addbibresource" current-macro) "")
+			  (t nil))))
+	 (and name extension
+	      (mg-TeX-kpsewhich-find-file (concat name extension)))
+	   (message "Cannot guess file name at point.")))
+     (define-key LaTeX-mode-map (kbd "C-c f") 'mg-LaTeX-find-file-at-point)))
 
 (eval-after-load "preview"
   '(progn
