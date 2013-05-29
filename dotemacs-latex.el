@@ -29,6 +29,16 @@
 
 ;;; Code:
 
+;; Se AUCTeX non è già caricato, caricalo da `auctex-dir'.  In `.emacs' imposta
+;; il suo valore al percorso in cui si trova AUCTeX.
+(when (and (boundp 'auctex-dir) (not (featurep 'tex-site)))
+  (setq TeX-data-directory auctex-dir)
+  (add-to-list 'load-path auctex-dir)
+  (load "auctex.el" nil t t)
+  (add-to-list 'load-path (concat auctex-dir "preview/"))
+  (load "preview-latex.el" nil t t)
+  (add-to-list 'Info-default-directory-list (concat auctex-dir "doc/")))
+
 (eval-after-load "tex"
   '(progn
      (TeX-global-PDF-mode 1)
@@ -50,9 +60,13 @@
 			      "/usr/local/texlive/2012/texmf-dist/tex/")
 	   TeX-newline-function 'newline-and-indent
 	   TeX-debug-bad-boxes t
-	   TeX-view-program-selection '(((output-dvi style-pstricks) "xdg-open")
-					(output-dvi "xdg-open")
-					(output-pdf "xdg-open")
+	   TeX-source-correlate-mode t
+	   TeX-source-correlate-start-server t
+	   TeX-view-program-selection `(((output-dvi style-pstricks) "xdg-open")
+					;; Imposta `auctex-dvi-viewer' e
+					;; `auctex-pdf-viewer' in `.emacs'.
+					(output-dvi ,auctex-dvi-viewer)
+					(output-pdf ,auctex-pdf-viewer)
 					(output-html "xdg-open"))
 	   TeX-electric-sub-and-superscript 1
 	   TeX-math-close-single-dollar t
