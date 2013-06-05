@@ -37,7 +37,8 @@
   (load "auctex.el" nil t t)
   (add-to-list 'load-path (concat auctex-dir "preview/"))
   (load "preview-latex.el" nil t t)
-  (add-to-list 'Info-default-directory-list (concat auctex-dir "doc/")))
+  (eval-after-load "info"
+    '(add-to-list 'Info-additional-directory-list (concat auctex-dir "doc/"))))
 
 (eval-after-load "tex"
   '(progn
@@ -55,10 +56,8 @@
 		  '("Latexmk" "latexmk %(-PDF) %s"
 		    TeX-run-TeX nil t
 		    :help "Run Latexmk on file to build everything."))
-     (add-to-list 'TeX-command-list '("Make" "make" TeX-run-TeX nil t))
-     (setq TeX-macro-global '("/usr/share/texmf/tex/" "/usr/share/texmf/bibtex/bst/"
-			      "/usr/local/texlive/2012/texmf-dist/tex/")
-	   TeX-newline-function 'newline-and-indent
+     (add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t))
+     (setq TeX-newline-function 'newline-and-indent
 	   TeX-debug-bad-boxes t
 	   TeX-source-correlate-mode t
 	   TeX-source-correlate-start-server t
@@ -69,7 +68,7 @@
 					(output-pdf ,auctex-pdf-viewer)
 					(output-html "xdg-open"))
 	   TeX-electric-sub-and-superscript 1
-	   TeX-math-close-single-dollar t
+	   TeX-electric-math '("\\(" . "\\)")
 	   TeX-debug-warnings t
 	   TeX-auto-save t
 	   TeX-parse-self t
@@ -84,6 +83,23 @@
 		  (flyspell-mode)
 		  (turn-on-auto-fill)
 		  (turn-on-reftex)))
+     (defun mg-TeX-toggle-electric-math ()
+       "Toggle the value of `TeX-electric-math'."
+       (interactive)
+       (cond
+	;; "\(...\)" to "$...$"
+	((equal (car TeX-electric-math) "\\(")
+	 (setq TeX-electric-math '("$" . "$"))
+	 (message (concat "`TeX-insert-dollar' now inserts \"$...$\".")))
+	;; "$...$" to "nil"
+	((equal (car TeX-electric-math) "$")
+	 (setq TeX-electric-math nil)
+	 (message (concat "`TeX-insert-dollar' now inserts \"$\".")))
+	;; Anything else to "\(...\)"
+	(t
+	 (setq TeX-electric-math '("\\(" . "\\)"))
+	 (message (concat "`TeX-insert-dollar' now inserts \"\\(...\\)\".")))))
+     (define-key TeX-mode-map (kbd "s-4") 'mg-TeX-toggle-electric-math)
      (defun mg-TeX-kpsewhich-find-file (&optional name)
        "Visit file associated to NAME searching for it with kpsewhich.
 If NAME is nil prompt for a file name.  If there is an active
@@ -106,7 +122,26 @@ the current one otherwise."
 		 (funcall fun file)
 	       (message (concat "File " name " not found."))))
 	 (message "Kpsewhich not available.")))
-     (define-key TeX-mode-map (kbd "C-c k") 'mg-TeX-kpsewhich-find-file)))
+     (define-key TeX-mode-map (kbd "C-c k") 'mg-TeX-kpsewhich-find-file)
+     (defun mg-TeX-forward-group ()
+       "Move to the next empty group not commented."
+       (interactive)
+       (let ((group (save-excursion  (search-forward "{}" nil t))))
+	 (when group
+	   (set-mark (point))
+	   (deactivate-mark)
+	   (goto-char group)
+	   (backward-char 1))))
+     (define-key TeX-mode-map [M-right] 'mg-TeX-forward-group)
+     (defun mg-TeX-backward-group ()
+       (interactive)
+       (let ((group (save-excursion (search-backward "{}" nil t))))
+	 (when group
+	   (set-mark (point))
+	   (deactivate-mark)
+	   (goto-char group)
+	   (forward-char 1))))
+     (define-key TeX-mode-map [M-left] 'mg-TeX-backward-group)))
 
 (eval-after-load "reftex-vars"
   '(progn
@@ -127,7 +162,7 @@ the current one otherwise."
 	 '("indices*" 1))))
      (setq LaTeX-clean-intermediate-suffixes (append
 					      LaTeX-clean-intermediate-suffixes
-					      '("\\.fdb_latexmk" "\\.fls"))
+					      '("\\.fdb_latexmk" "\\.fls" "-blx\\.bib"))
 	   LaTeX-top-caption-list '("table"))
      (add-hook 'LaTeX-mode-hook
 	       '(lambda ()
