@@ -138,9 +138,8 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 (defun mg-insert-typographic-apostrophe (&optional arg)
   "Insert typographic apostrophe sign \"’\".
 
-With raw \\[universal-argument] prefix or if
-`mg-typographic-apostrophe' is non-nil, insert \"'\".  With
-optional ARG, insert that many \"'\"."
+With raw \\[universal-argument] prefix or if `mg-typographic-apostrophe'
+is non-nil, insert \"'\".  With optional ARG, insert that many \"'\"."
   (interactive "P")
   (cond
    ((or (not mg-typographic-apostrophe) (and arg (listp arg)))
@@ -153,13 +152,13 @@ optional ARG, insert that many \"'\"."
 
 ;; Keybindings impostati da me: C-next (Ctrl + Pag ↓) per andare avanti nei
 ;; buffer, C-prior (Ctrl + Pag ↑) per tornare indietro
-(global-set-key (kbd "<C-next>") 'next-buffer)
-(global-set-key (kbd "<C-prior>") 'previous-buffer)
-(global-set-key (kbd "<M-f5>") 'open-buffer-path)
-(global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "<f6>") 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
-(global-set-key (kbd "<f7>") 'eval-buffer)
-(global-set-key (kbd "<f8>") 'check-parens)
+(global-set-key [C-next] 'next-buffer)
+(global-set-key [C-prior] 'previous-buffer)
+(global-set-key [M-f5] 'open-buffer-path)
+(global-set-key [f5] 'revert-buffer)
+(global-set-key [f6] 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
+(global-set-key [f7] 'eval-buffer)
+(global-set-key [f8] 'check-parens)
 (global-set-key (kbd "C-c M-m") 'mg-message-mark-inserted-region)
 ;; associo RET (default: `newline') a `reindent-then-newline-and-indent', se non
 ;; ti piace il fatto che reindenti la riga attuale prima di andare a capo
@@ -167,7 +166,11 @@ optional ARG, insert that many \"'\"."
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 ;; cycle through buffers with Ctrl-Tab (like Firefox). See
 ;; http://emacs-fu.blogspot.com/2008/12/cycling-through-your-buffers-with-ctrl.html
-(global-set-key (kbd "<C-tab>") 'bury-buffer)
+(global-set-key [C-tab] 'bury-buffer)
+;; Inserisci un carattere scrivendo il suo nome Unicode, o il codice
+;; esadecimale/decimale/ottale.  Emula il metodo di input di caratteri Unicode
+;; in ambiente GTK: `C-U' seguito dal codice esadecimale.
+(global-set-key (kbd "C-s-u") 'insert-char)
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
@@ -217,4 +220,11 @@ optional ARG, insert that many \"'\"."
 		(c-toggle-hungry-state 1)
 		(subword-mode 1)
 		(setq c-report-syntactic-errors t))))
+
+;; http://lists.gnu.org/archive/html/bug-auctex/2013-04/msg00004.html
+(defun raise-client-frame ()
+  (let ((wmctrl (executable-find "wmctrl")))
+    (if wmctrl
+	(start-process "wmctrl" nil wmctrl "-R" (frame-parameter nil 'name)))))
+(add-hook 'server-switch-hook 'raise-client-frame)
 ;;; dotemacs.el ends here
