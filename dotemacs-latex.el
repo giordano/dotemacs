@@ -88,18 +88,18 @@
        (interactive)
        (cond
 	;; "\(...\)" to "$...$"
-	((equal (car TeX-electric-math) "\\(")
+	((equal TeX-electric-math '("\\(" . "\\)"))
 	 (setq TeX-electric-math '("$" . "$"))
-	 (message (concat "`TeX-insert-dollar' now inserts \"$...$\".")))
-	;; "$...$" to "nil"
-	((equal (car TeX-electric-math) "$")
+	 (message "`TeX-insert-dollar' now inserts \"$...$\"."))
+	;; "$...$" to "$"
+	((equal TeX-electric-math '("$" . "$"))
 	 (setq TeX-electric-math nil)
-	 (message (concat "`TeX-insert-dollar' now inserts \"$\".")))
+	 (message "`TeX-insert-dollar' now inserts \"$\"."))
 	;; Anything else to "\(...\)"
 	(t
 	 (setq TeX-electric-math '("\\(" . "\\)"))
-	 (message (concat "`TeX-insert-dollar' now inserts \"\\(...\\)\".")))))
-     (define-key TeX-mode-map (kbd "s-4") 'mg-TeX-toggle-electric-math)
+	 (message "`TeX-insert-dollar' now inserts \"\\(...\\)\"."))))
+     (define-key TeX-mode-map (kbd "s-4") 'mg-TeX-toggle-electric-inline-math)
      (defun mg-TeX-kpsewhich-find-file (&optional name)
        "Visit file associated to NAME searching for it with kpsewhich.
 If NAME is nil prompt for a file name.  If there is an active

@@ -171,6 +171,9 @@ is non-nil, insert \"'\".  With optional ARG, insert that many \"'\"."
 ;; esadecimale/decimale/ottale.  Emula il metodo di input di caratteri Unicode
 ;; in ambiente GTK: `C-U' seguito dal codice esadecimale.
 (global-set-key (kbd "C-s-u") 'insert-char)
+;; Key bindings per Magit
+(global-set-key (kbd "s-m b") 'magit-blame-mode)
+(global-set-key (kbd "s-m s") 'magit-status)
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
