@@ -60,7 +60,37 @@
 	   fortran-blink-matching-if t)
      (add-hook 'fortran-mode-hook
 	       '(lambda ()
+		  (imenu-add-menubar-index)
 		  (turn-on-auto-fill)
-		  (abbrev-mode 1)))))
+		  (abbrev-mode 1)))
+     (defun mg-fortran-kill-line ()
+       "Kill the rest of the current line, as if with `kill-line'.
+
+If it is called without prexif argument \\[universal-argument]
+and the next line is the continuation of the current one, kill it
+as well."
+       (interactive)
+       (kill-line)
+       (if (and
+	    (null current-prefix-arg)
+	    ;; Has the whole line been killed?  i.e., are still there non white
+	    ;; spaces?
+	    (save-excursion
+	      (skip-chars-backward " \t")
+	      (bolp))
+	    ;; Is the next line the continuation of the current one?
+	    (save-excursion
+	      (forward-char)
+	      (and
+	       ;; Is point at beginning of line?  XXX: probably unnecessary.
+	       (bolp)
+	       ;; Is the sixth column of the line non empty?  Exclude comments.
+	       ;; XXX: " \\{5\\}[^ ]" instead of "[^cC].\\{4\\}[^ ]"?
+	       (looking-at "[^cC].\\{4\\}[^ ]"))))
+	   ;; Then kill the next line.
+	   (progn
+	     (kill-line)
+	     (mg-fortran-kill-line))))
+     (define-key fortran-mode-map (kbd "C-k") 'mg-fortran-kill-line)))
 
 ;;; dotemacs-fortran.el ends here
