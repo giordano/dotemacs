@@ -67,8 +67,8 @@
 					(output-dvi ,auctex-dvi-viewer)
 					(output-pdf ,auctex-pdf-viewer)
 					(output-html "xdg-open"))
+	   TeX-electric-escape t
 	   TeX-electric-sub-and-superscript 1
-	   TeX-electric-math '("\\(" . "\\)")
 	   TeX-debug-warnings t
 	   TeX-auto-save t
 	   TeX-parse-self t
@@ -83,6 +83,9 @@
 		  (flyspell-mode)
 		  (turn-on-auto-fill)
 		  (turn-on-reftex)))
+     (add-hook 'plain-TeX-mode-hook
+	       '(lambda () (set (make-variable-buffer-local 'TeX-electric-math)
+				(cons "$" "$"))))
      (defun mg-TeX-toggle-electric-math ()
        "Toggle the value of `TeX-electric-math'."
        (interactive)
@@ -99,7 +102,7 @@
 	(t
 	 (setq TeX-electric-math '("\\(" . "\\)"))
 	 (message "`TeX-insert-dollar' now inserts \"\\(...\\)\"."))))
-     (define-key TeX-mode-map (kbd "s-4") 'mg-TeX-toggle-electric-inline-math)
+     (define-key TeX-mode-map (kbd "s-4") 'mg-TeX-toggle-electric-math)
      (defun mg-TeX-kpsewhich-find-file (&optional name)
        "Visit file associated to NAME searching for it with kpsewhich.
 If NAME is nil prompt for a file name.  If there is an active
@@ -148,7 +151,8 @@ the current one otherwise."
      (setq reftex-plug-into-AUCTeX t
 	   reftex-label-alist '(AMSTeX)
 	   reftex-bibliography-commands
-	   '("bibliography" "nobibliography" "addbibresource"))))
+	   '("bibliography" "nobibliography" "addbibresource")
+	   reftex-ref-macro-prompt nil)))
 
 (eval-after-load "latex"
   '(progn
@@ -166,7 +170,9 @@ the current one otherwise."
 	   LaTeX-top-caption-list '("table"))
      (add-hook 'LaTeX-mode-hook
 	       '(lambda ()
-		  (LaTeX-math-mode)))
+		  (LaTeX-math-mode)
+		  (set (make-variable-buffer-local 'TeX-electric-math)
+		       (cons "\\(" "\\)"))))
      ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
      ;; (require 'flymake)
      ;; (defun flymake-get-tex-args (file-name)
@@ -227,12 +233,18 @@ See also `mg-TeX-kpsewhich-find-file'."
 			  ((equal "bibliography" current-macro) ".bib")
 			  ((equal "addbibresource" current-macro) "")
 			  (t nil))))
-	 (and name extension
-	      (mg-TeX-kpsewhich-find-file (concat name extension)))
-	   (message "Cannot guess file name at point.")))
-     (define-key LaTeX-mode-map (kbd "C-c f") 'mg-LaTeX-find-file-at-point)))
+	 (if (and name extension)
+	     (mg-TeX-kpsewhich-find-file (concat name extension))
+	   (message "Cannot guess file name at point."))))
+     (define-key LaTeX-mode-map (kbd "C-c f") 'mg-LaTeX-find-file-at-point)
+     ;; AUCTeX definiscse già delle scorciatoie per `LaTeX-find-matching-end' e
+     ;; `LaTeX-find-matching-begin', però preferisco queste due, sono più brevi.
+     (define-key LaTeX-mode-map [M-down] 'LaTeX-find-matching-end)
+     (define-key LaTeX-mode-map [M-up] 'LaTeX-find-matching-begin)))
 
 (eval-after-load "preview"
   '(progn
-     (add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)))
+     (add-to-list 'preview-default-preamble
+		  "\\PreviewEnvironment{tikzpicture}
+\\PreviewEnvironment{fmfgraph*}" t)))
 ;;; dotemacs-latex.el ends here

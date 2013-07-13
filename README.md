@@ -5,8 +5,9 @@ rischio e pericolo**.
 Nel file di inizializzazione `~/.emacs` inserisci
 ````Lisp
 (load "<PERCORSO>/dotemacs")
+(load "<PERCORSO>/dotemacs-auctex")
+(load "<PERCORSO>/dotemacs-elisp")
 (load "<PERCORSO>/dotemacs-fortran")
-(load "<PERCORSO>/dotemacs-latex")
 (load "<PERCORSO>/dotemacs-notebook")
 (load "<PERCORSO>/dotemacs-org")
 ````

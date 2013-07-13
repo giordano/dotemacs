@@ -30,6 +30,7 @@
 ;;; Code:
 
 (when (>= emacs-major-version 24)
+  (electric-pair-mode +1)
   ;; non mi piace il font di default di Emacs 24
   (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10"))
   ;; in Emacs 24 vengono affiancate le etichette alle icone della
@@ -88,7 +89,6 @@
 (size-indication-mode 1) ; mostra la dimensione del buffer nella mode line
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
 (delete-selection-mode 1) ; il testo inserito sostituisce la regione selezionata
-(electric-pair-mode +1)
 
 ;; vedi https://twiki.cern.ch/twiki/bin/view/CDS/EmacsTips
 (setq backup-by-copying t      ; don't clobber symlinks
@@ -131,23 +131,20 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 (defun open-buffer-path ()
   "Run file manager on the directory of the current buffer."
   (interactive)
-  (shell-command (concat "xdg-open " default-directory)))
+  (shell-command (concat "xdg-open "
+			 (prin1-to-string default-directory))))
 
 (defvar mg-typographic-apostrophe t
   "If non-nil, insert \"’\" pressing \"'\".")
 (defun mg-insert-typographic-apostrophe (&optional arg)
-  "Insert typographic apostrophe sign \"’\".
-
-With raw \\[universal-argument] prefix or if `mg-typographic-apostrophe'
-is non-nil, insert \"'\".  With optional ARG, insert that many \"'\"."
-  (interactive "P")
-  (cond
-   ((or (not mg-typographic-apostrophe) (and arg (listp arg)))
-    (insert "'"))
-   (arg
-    (insert (make-string (prefix-numeric-value arg) ?')))
-   (t
-    (insert "’"))))
+  "Insert typographic apostrophe sign \"’\"."
+  (interactive)
+  (if (or (not mg-typographic-apostrophe)
+	  ;; Do not use typographic apostrophe in "`foo1-bar2'".
+	  (save-excursion
+	    (re-search-backward "`[[:alnum:]-]*\\=" (line-beginning-position) t)))
+      (insert "'")
+    (insert "’")))
 (define-key text-mode-map "'" 'mg-insert-typographic-apostrophe)
 
 ;; Keybindings impostati da me: C-next (Ctrl + Pag ↓) per andare avanti nei
@@ -157,8 +154,7 @@ is non-nil, insert \"'\".  With optional ARG, insert that many \"'\"."
 (global-set-key [M-f5] 'open-buffer-path)
 (global-set-key [f5] 'revert-buffer)
 (global-set-key [f6] 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
-(global-set-key [f7] 'eval-buffer)
-(global-set-key [f8] 'check-parens)
+(global-set-key [f7] 'check-parens)
 (global-set-key (kbd "C-c M-m") 'mg-message-mark-inserted-region)
 ;; associo RET (default: `newline') a `reindent-then-newline-and-indent', se non
 ;; ti piace il fatto che reindenti la riga attuale prima di andare a capo
@@ -211,7 +207,6 @@ is non-nil, insert \"'\".  With optional ARG, insert that many \"'\"."
   '(add-hook 'makefile-mode-hook
 	     '(lambda ()
 		(local-set-key (kbd "RET") 'newline))))
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'before-save-hook 'time-stamp)
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook
@@ -222,7 +217,8 @@ is non-nil, insert \"'\".  With optional ARG, insert that many \"'\"."
 		(c-toggle-auto-state 1)
 		(c-toggle-hungry-state 1)
 		(subword-mode 1)
-		(setq c-report-syntactic-errors t))))
+		(setq c-report-syntactic-errors t)
+		(electric-pair-mode -1))))
 
 ;; http://lists.gnu.org/archive/html/bug-auctex/2013-04/msg00004.html
 (defun raise-client-frame ()
