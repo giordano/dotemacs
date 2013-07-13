@@ -70,7 +70,7 @@ If it is called without prexif argument \\[universal-argument]
 and the next line is the continuation of the current one, kill it
 as well."
        (interactive)
-       (kill-line)
+       (kill-line current-prefix-arg)
        (if (and
 	    (null current-prefix-arg)
 	    ;; Has the whole line been killed?  i.e., are still there non white
