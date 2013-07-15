@@ -63,16 +63,16 @@
 		  (imenu-add-menubar-index)
 		  (turn-on-auto-fill)
 		  (abbrev-mode 1)))
-     (defun mg-fortran-kill-line ()
-       "Kill the rest of the current line, as if with `kill-line'.
+     (defun mg-fortran-kill-line (&optional arg)
+       "Kill the rest of the current line.
 
-If it is called without prexif argument \\[universal-argument]
-and the next line is the continuation of the current one, kill it
-as well."
-       (interactive)
-       (kill-line current-prefix-arg)
+If optional ARG is non-nil, behave like `kill-line', otherwise if
+following lines are the continuation of the current one, kill
+them as well."
+       (interactive "P")
+       (kill-line arg)
        (if (and
-	    (null current-prefix-arg)
+	    (null arg)
 	    ;; Has the whole line been killed?  i.e., are still there non white
 	    ;; spaces?
 	    (save-excursion
