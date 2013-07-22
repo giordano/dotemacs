@@ -84,13 +84,19 @@ them as well."
 	      (and
 	       ;; Is point at beginning of line?  XXX: probably unnecessary.
 	       (bolp)
-	       ;; Is the sixth column of the line non empty?  Exclude comments.
-	       ;; XXX: " \\{5\\}[^ ]" instead of "[^cC].\\{4\\}[^ ]"?
-	       (looking-at "[^cC].\\{4\\}[^ ]"))))
+	       ;; Is the sixth column of the line non empty?  Exclude comments
+	       ;; and preprocessor directives.  XXX: " \\{5\\}[^ ]" instead of
+	       ;; "[^cC#].\\{4\\}[^ ]"?
+	       (looking-at "[^cC#].\\{4\\}[^ ]"))))
 	   ;; Then kill the next line.
 	   (progn
+	     (append-next-kill)
 	     (kill-line)
 	     (mg-fortran-kill-line))))
-     (define-key fortran-mode-map (kbd "C-k") 'mg-fortran-kill-line)))
+     (define-key fortran-mode-map (kbd "C-k") 'mg-fortran-kill-line)
+     (define-key fortran-mode-map [f9]
+       (lambda ()
+	 (interactive)
+	 (compile "make -k")))))
 
 ;;; dotemacs-fortran.el ends here
