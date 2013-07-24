@@ -166,13 +166,17 @@ the current one otherwise."
 	 '("indices*" 1))))
      (setq LaTeX-clean-intermediate-suffixes (append
 					      LaTeX-clean-intermediate-suffixes
-					      '("\\.fdb_latexmk" "\\.fls" "-blx\\.bib"))
+					      '("\\.fdb_latexmk"))
 	   LaTeX-top-caption-list '("table"))
      (add-hook 'LaTeX-mode-hook
 	       '(lambda ()
 		  (LaTeX-math-mode)
 		  (set (make-variable-buffer-local 'TeX-electric-math)
-		       (cons "\\(" "\\)"))))
+		       (cons "\\(" "\\)"))
+		  ;; Override default `equation' environment, don't
+		  ;; automatically insert label.
+		  (LaTeX-add-environments
+		   '("equation" LaTeX-insert-environment))))
      ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
      ;; (require 'flymake)
      ;; (defun flymake-get-tex-args (file-name)
@@ -183,8 +187,8 @@ the current one otherwise."
      (when (featurep 'auto-complete)
        ;; vedi http://code.google.com/p/ac-math/
        (require 'ac-math)
-       (add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of {{{latex-mode}}}
-       (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
+       (add-to-list 'ac-modes 'latex-mode) ; make auto-complete aware of {{{latex-mode}}}
+       (defun ac-latex-mode-setup ()	; add ac-sources to default ac-sources
 	 (setq ac-sources
 	       (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
 		       ac-sources)))
