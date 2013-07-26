@@ -63,6 +63,7 @@
 		  (imenu-add-menubar-index)
 		  (turn-on-auto-fill)
 		  (abbrev-mode 1)))
+
      (defun mg-fortran-kill-line (&optional arg)
        "Kill the rest of the current line.
 
@@ -93,6 +94,83 @@ them as well."
 	     (append-next-kill)
 	     (kill-line)
 	     (mg-fortran-kill-line))))
+
+     (defun mg-fortran-display-label (num &optional how)
+       "Display label NUM.
+
+HOW optional argument determine how the label is displayed:
+  nil:           Move point to the label.
+  echo:          Show one-line info in echo area.
+  other-window:  Display the label in another window."
+       (interactive "nLabel: ")
+       (let ((string (prin1-to-string num))
+	     (end-of-subprogram
+	      (save-excursion (fortran-end-of-subprogram) (point)))
+	     labelpos fail)
+	 (if (> (length string) 5)
+	     (message "Labels cannot be longer than 5 columns.")
+	   (save-excursion
+	     (fortran-beginning-of-subprogram)
+	     (while (and (null labelpos) (null fail))
+	       (condition-case nil
+		   ;; Search for the label as a single word.
+		   (re-search-forward (concat "\\<" string "\\>")
+				      end-of-subprogram)
+		 ;; If search fails issue a message.
+		 (search-failed
+		  (setq fail t)
+		  (message (concat "Label " string " not found."))))
+	       ;; Make sure the number found is between bol and the fifth column.
+	       (unless fail
+		 (move-to-column 5)
+		 (setq labelpos
+		       (re-search-backward
+			(concat " *\\<" string "\\> *")
+			(line-beginning-position) t))
+		 (end-of-line))))
+	   (if labelpos
+	       (cond
+		((eq how 'echo)
+		 (save-excursion
+		   (goto-char labelpos)
+		   (message (buffer-substring
+			     (line-beginning-position)
+			     (line-end-position)))))
+		((eq how 'other-window)
+		 (switch-to-buffer-other-window (current-buffer))
+		 (goto-char labelpos)
+		 (other-window -1))
+		(t
+		 (set-mark (point))
+		 (goto-char labelpos)
+		 (deactivate-mark)))))))
+
+     (defun mg-fortran-display-label-at-point ()
+       "Display label at point in another window."
+       (interactive)
+       (let ((label (thing-at-point 'number)))
+	 (if label
+	     (mg-fortran-display-label label 'other-window)
+	   (message "Cannot find label at point."))))
+
+     (defun mg-fortran-echo-label-at-point ()
+       "Display the label at point in the echo area."
+       (let ((label (thing-at-point 'number)))
+	 (if label
+	     (mg-fortran-display-label label 'echo))))
+
+     (defcustom mg-fortran-echo-label t
+       "Whether to display labels in echo area."
+       :type 'boolean)
+     (defcustom mg-fortran-echo-label-idle-delay 1
+       "Number of seconds of idle time to wait before displaying labels."
+       :type 'number)
+     (if mg-fortran-echo-label
+	 (run-with-idle-timer mg-fortran-echo-label-idle-delay t
+			      'mg-fortran-echo-label-at-point))
+
+     (define-key fortran-mode-map (kbd "C-c &")
+       'mg-fortran-display-label-at-point)
      (define-key fortran-mode-map (kbd "C-k") 'mg-fortran-kill-line)
      (define-key fortran-mode-map [f9]
        (lambda ()
