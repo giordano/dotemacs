@@ -1,6 +1,6 @@
 ;;; dotemacs-fortran.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012 Mosè Giordano
+;; Copyright (c) 2012-2013  Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -57,7 +57,8 @@
 	   fortran-if-indent 2
 	   fortran-continuation-indent 4
 	   fortran-line-number-indent 4
-	   fortran-blink-matching-if t)
+	   fortran-blink-matching-if t
+	   fortran-continuation-string "&")
      (add-hook 'fortran-mode-hook
 	       '(lambda ()
 		  (imenu-add-menubar-index)
@@ -95,40 +96,35 @@ them as well."
 	     (kill-line)
 	     (mg-fortran-kill-line))))
 
-     (defun mg-fortran-display-label (num &optional how)
-       "Display label NUM.
+     (defun mg-fortran-display-label (labelnum &optional how)
+       "Display label LABELNUM.
 
 HOW optional argument determine how the label is displayed:
   nil:           Move point to the label.
   echo:          Show one-line info in echo area.
   other-window:  Display the label in another window."
        (interactive "nLabel: ")
-       (let ((string (prin1-to-string num))
-	     (end-of-subprogram
-	      (save-excursion (fortran-end-of-subprogram) (point)))
-	     labelpos fail)
-	 (if (> (length string) 5)
-	     (message "Labels cannot be longer than 5 columns.")
+       (let ((labelstring (prin1-to-string labelnum))
+	     labelpos)
+	 ;; Don't be verbose when `how' == `echo'.
+	 (if (> (length labelstring) 5)
+	     (or (eq how 'echo)
+		 (message "Labels cannot be longer than 5 digits."))
 	   (save-excursion
 	     (fortran-beginning-of-subprogram)
-	     (while (and (null labelpos) (null fail))
-	       (condition-case nil
-		   ;; Search for the label as a single word.
-		   (re-search-forward (concat "\\<" string "\\>")
-				      end-of-subprogram)
-		 ;; If search fails issue a message.
-		 (search-failed
-		  (setq fail t)
-		  (message (concat "Label " string " not found."))))
-	       ;; Make sure the number found is between bol and the fifth column.
-	       (unless fail
-		 (move-to-column 5)
-		 (setq labelpos
-		       (re-search-backward
-			(concat " *\\<" string "\\> *")
-			(line-beginning-position) t))
-		 (end-of-line))))
+	     (condition-case nil
+		 ;; Search in the current subprogram for the label.
+		 (and
+		  (re-search-forward
+		   (concat "^ *\\<" labelstring "\\> +")
+		   (save-excursion (fortran-end-of-subprogram) (point)))
+		  (if (<= (current-column) 6) (setq labelpos (point))))
+	       ;; If search fails issue a message.
+	       (search-failed
+		(or (eq how 'echo)
+		    (message (concat "Label " labelstring " not found."))))))
 	   (if labelpos
+	       ;; Display the label according to `how'.
 	       (cond
 		((eq how 'echo)
 		 (save-excursion
@@ -148,26 +144,31 @@ HOW optional argument determine how the label is displayed:
      (defun mg-fortran-display-label-at-point ()
        "Display label at point in another window."
        (interactive)
-       (let ((label (thing-at-point 'number)))
+       (let ((label (number-at-point)))
 	 (if label
 	     (mg-fortran-display-label label 'other-window)
 	   (message "Cannot find label at point."))))
 
      (defun mg-fortran-echo-label-at-point ()
        "Display the label at point in the echo area."
-       (let ((label (thing-at-point 'number)))
+       (let ((label (number-at-point)))
 	 (if label
 	     (mg-fortran-display-label label 'echo))))
 
      (defcustom mg-fortran-echo-label t
        "Whether to display labels in echo area."
-       :type 'boolean)
+       :type 'boolean
+       :group 'fortran)
      (defcustom mg-fortran-echo-label-idle-delay 1
        "Number of seconds of idle time to wait before displaying labels."
-       :type 'number)
-     (if mg-fortran-echo-label
-	 (run-with-idle-timer mg-fortran-echo-label-idle-delay t
-			      'mg-fortran-echo-label-at-point))
+       :type 'number
+       :group 'fortran)
+
+     (add-hook 'fortran-mode-hook
+	       (lambda ()
+		 (if mg-fortran-echo-label
+		     (run-with-idle-timer mg-fortran-echo-label-idle-delay t
+					  'mg-fortran-echo-label-at-point))))
 
      (define-key fortran-mode-map (kbd "C-c &")
        'mg-fortran-display-label-at-point)
@@ -175,6 +176,8 @@ HOW optional argument determine how the label is displayed:
      (define-key fortran-mode-map [f9]
        (lambda ()
 	 (interactive)
-	 (compile "make -k")))))
+	 (compile "make -k")))
+     (define-key fortran-mode-map [M-up] 'fortran-beginning-of-subprogram)
+     (define-key fortran-mode-map [M-down] 'fortran-end-of-subprogram)))
 
 ;;; dotemacs-fortran.el ends here
