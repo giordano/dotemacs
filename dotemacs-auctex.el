@@ -46,16 +46,16 @@
      ;; per latexmk vedi
      ;; http://lists.gnu.org/archive/html/auctex/2012-10/msg00031.html
      (add-to-list 'TeX-expand-list
-		  '("%(-PDF)"
-		    (lambda ()
-		      (if (and (not TeX-Omega-mode)
-			       (or TeX-PDF-mode TeX-DVI-via-PDFTeX))
-			  "-pdf -pdflatex=\"pdflatex -interaction=nonstopmode\""
-			"-dvi -latex=\"latex -interaction=nonstopmode\""))))
+     		  '("%(-PDF)"
+     		    (lambda ()
+     		      (if (and (not TeX-Omega-mode)
+     			       (or TeX-PDF-mode TeX-DVI-via-PDFTeX))
+     			  "-pdf -pdflatex=\"pdflatex -interaction=nonstopmode\""
+     			"-dvi -latex=\"latex -interaction=nonstopmode\""))))
      (add-to-list 'TeX-command-list
-		  '("Latexmk" "latexmk %(-PDF) %s"
-		    TeX-run-TeX nil t
-		    :help "Run Latexmk on file to build everything."))
+     		  '("Latexmk" "latexmk %(-PDF) %s"
+     		    TeX-run-TeX nil t
+     		    :help "Run Latexmk on file to build everything."))
      (add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t))
      (setq TeX-newline-function 'newline-and-indent
 	   TeX-debug-bad-boxes t
@@ -102,7 +102,7 @@
 	(t
 	 (setq TeX-electric-math '("\\(" . "\\)"))
 	 (message "`TeX-insert-dollar' now inserts \"\\(...\\)\"."))))
-     (define-key TeX-mode-map (kbd "s-4") 'mg-TeX-toggle-electric-math)
+     (define-key TeX-mode-map (kbd "s-$") 'mg-TeX-toggle-electric-math)
      (defun mg-TeX-kpsewhich-find-file (&optional name)
        "Visit file associated to NAME searching for it with kpsewhich.
 If NAME is nil prompt for a file name.  If there is an active

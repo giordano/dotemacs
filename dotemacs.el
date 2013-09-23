@@ -77,8 +77,7 @@
       visible-bell t
       ;; File dove salvare i punteggi dei giochi
       tetris-score-file (concat user-emacs-directory "tetris-scores")
-      snake-score-file (concat user-emacs-directory "snake-scores")
-      vc-follow-symlinks t)
+      snake-score-file (concat user-emacs-directory "snake-scores"))
 (tabbar-mode 1) ; attiva la visualizzazione delle schede
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
@@ -132,7 +131,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   "Run file manager on the directory of the current buffer."
   (interactive)
   (shell-command (concat "xdg-open "
-			 (prin1-to-string default-directory))))
+			 (expand-file-name default-directory))))
 
 (defvar mg-typographic-apostrophe t
   "If non-nil, insert \"’\" pressing \"'\".")
@@ -151,7 +150,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 ;; buffer, C-prior (Ctrl + Pag ↑) per tornare indietro
 (global-set-key [C-next] 'next-buffer)
 (global-set-key [C-prior] 'previous-buffer)
-(global-set-key [M-f5] 'open-buffer-path)
+(global-set-key [M-f1] 'open-buffer-path)
 (global-set-key [f5] 'revert-buffer)
 (global-set-key [f6] 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key [f7] 'check-parens)
@@ -226,4 +225,15 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
     (if wmctrl
 	(start-process "wmctrl" nil wmctrl "-R" (frame-parameter nil 'name)))))
 (add-hook 'server-switch-hook 'raise-client-frame)
+
+;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2013-05/msg00365.html
+(dotimes (i 10)                         ; for all keys
+  (dolist (prefix (list "M" "C"))       ; for both modifiers
+    (global-set-key
+     (read (format "[%s-kp-%s]" prefix i))
+     'digit-argument)
+    (put 
+     (read (format "%s-kp-%s" prefix i))
+     'ascii-character
+     (+ ?0 i))))
 ;;; dotemacs.el ends here
