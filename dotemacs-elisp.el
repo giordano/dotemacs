@@ -41,9 +41,9 @@
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook
-	  '(lambda ()
-	     (turn-on-eldoc-mode)
-	     (enable-paredit-mode)))
+	  (lambda ()
+	    (turn-on-eldoc-mode)
+	    (enable-paredit-mode)))
 (eval-after-load "paredit"
   '(progn
      (define-key paredit-mode-map (kbd "<C-left>") 'left-word)

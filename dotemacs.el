@@ -204,20 +204,20 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 ;; `newline'
 (eval-after-load "make-mode"
   '(add-hook 'makefile-mode-hook
-	     '(lambda ()
-		(local-set-key (kbd "RET") 'newline))))
+	     (lambda ()
+	       (local-set-key (kbd "RET") 'newline))))
 (add-hook 'before-save-hook 'time-stamp)
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook
 	  'executable-make-buffer-file-executable-if-script-p)
 (eval-after-load "cc-mode"
   '(add-hook 'c-mode-common-hook
-	     '(lambda ()
-		(c-toggle-auto-state 1)
-		(c-toggle-hungry-state 1)
-		(subword-mode 1)
-		(setq c-report-syntactic-errors t)
-		(electric-pair-mode -1))))
+	     (lambda ()
+	       (c-toggle-auto-state 1)
+	       (c-toggle-hungry-state 1)
+	       (subword-mode 1)
+	       (setq c-report-syntactic-errors t)
+	       (set (make-local-variable 'electric-pair-mode) nil))))
 
 ;; http://lists.gnu.org/archive/html/bug-auctex/2013-04/msg00004.html
 (defun raise-client-frame ()

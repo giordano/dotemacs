@@ -46,10 +46,10 @@
 	   f90-program-indent 2
 	   f90-type-indent 2)
      (add-hook 'f90-mode-hook
-	       '(lambda ()
-		  (f90-add-imenu-menu)
-		  (turn-on-auto-fill)
-		  (abbrev-mode 1)))))
+	       (lambda ()
+		 (f90-add-imenu-menu)
+		 (turn-on-auto-fill)
+		 (abbrev-mode 1)))))
 
 (eval-after-load "fortran"
   '(progn
@@ -60,10 +60,10 @@
 	   fortran-blink-matching-if t
 	   fortran-continuation-string "&")
      (add-hook 'fortran-mode-hook
-	       '(lambda ()
-		  (imenu-add-menubar-index)
-		  (turn-on-auto-fill)
-		  (abbrev-mode 1)))
+	       (lambda ()
+		 (imenu-add-menubar-index)
+		 (turn-on-auto-fill)
+		 (abbrev-mode 1)))
 
      (defun mg-fortran-kill-line (&optional arg)
        "Kill the rest of the current line.

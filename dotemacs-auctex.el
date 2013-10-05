@@ -79,13 +79,13 @@
      (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
      (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
      (add-hook 'TeX-mode-hook
-	       '(lambda ()
-		  (flyspell-mode)
-		  (turn-on-auto-fill)
-		  (turn-on-reftex)))
+	       (lambda ()
+		 (flyspell-mode)
+		 (turn-on-auto-fill)
+		 (turn-on-reftex)))
      (add-hook 'plain-TeX-mode-hook
-	       '(lambda () (set (make-variable-buffer-local 'TeX-electric-math)
-				(cons "$" "$"))))
+	       (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
+			       (cons "$" "$"))))
      (defun mg-TeX-toggle-electric-math ()
        "Toggle the value of `TeX-electric-math'."
        (interactive)
@@ -169,14 +169,14 @@ the current one otherwise."
 					      '("\\.fdb_latexmk"))
 	   LaTeX-top-caption-list '("table"))
      (add-hook 'LaTeX-mode-hook
-	       '(lambda ()
-		  (LaTeX-math-mode)
-		  (set (make-variable-buffer-local 'TeX-electric-math)
-		       (cons "\\(" "\\)"))
-		  ;; Override default `equation' environment, don't
-		  ;; automatically insert label.
-		  (LaTeX-add-environments
-		   '("equation" LaTeX-insert-environment))))
+	       (lambda ()
+		 (LaTeX-math-mode)
+		 (set (make-variable-buffer-local 'TeX-electric-math)
+		      (cons "\\(" "\\)"))
+		 ;; Override default `equation' environment, don't
+		 ;; automatically insert label.
+		 (LaTeX-add-environments
+		  '("equation" LaTeX-insert-environment))))
      ;; http://soundandcomplete.com/2010/05/13/emacs-as-the-ultimate-latex-editor/
      ;; (require 'flymake)
      ;; (defun flymake-get-tex-args (file-name)
