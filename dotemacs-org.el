@@ -109,7 +109,10 @@ with a prefix argument, prompt for a different date."
 
      (define-key org-mode-map "'" 'mg-insert-typographic-apostrophe)))
 
-(eval-after-load "org-publish"
-  '(load "~/Documenti/sito/sito"))
+(eval-after-load "ox-publish"
+  '(load "~/repo/sito/sito"))
+
+(eval-after-load "ox"
+  '(setq org-export-with-smart-quotes t))
 
 ;;; dotemacs-org.el ends here

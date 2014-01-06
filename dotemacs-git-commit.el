@@ -31,7 +31,11 @@
 
 ;;; Code:
 
-(add-to-list 'load-path user-emacs-directory) ;; cartella in cui si trova git-commit.el
+(add-to-list
+ 'load-path
+ ;; Search for the directory of the ELPA `git-commit-mode'.
+ (car (directory-files (concat user-emacs-directory "/elpa")
+		       t "git-commit-mode-[.0-9]+")))
 (setq-default fill-column 72)
 (column-number-mode)
 (setq backup-by-copying t      ; don't clobber symlinks
@@ -41,8 +45,8 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t)       ; use versioned backups
-(require 'cl-lib) ;; serve per `git-commit'
-(require 'git-commit)
+(require 'cl-lib)
+(require 'git-commit-mode)
 (add-hook 'git-commit-mode-hook 'turn-on-auto-fill)
 
 ;;; dotemacs-git-commit.el ends here

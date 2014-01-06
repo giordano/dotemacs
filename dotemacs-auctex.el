@@ -67,7 +67,7 @@
 					(output-dvi ,auctex-dvi-viewer)
 					(output-pdf ,auctex-pdf-viewer)
 					(output-html "xdg-open"))
-	   TeX-electric-escape t
+	   ;; TeX-electric-escape t
 	   TeX-electric-sub-and-superscript 1
 	   TeX-debug-warnings t
 	   TeX-auto-save t
@@ -167,7 +167,8 @@ the current one otherwise."
      (setq LaTeX-clean-intermediate-suffixes (append
 					      LaTeX-clean-intermediate-suffixes
 					      '("\\.fdb_latexmk"))
-	   LaTeX-top-caption-list '("table"))
+	   LaTeX-top-caption-list '("table")
+	   LaTeX-electric-left-right-brace t)
      (add-hook 'LaTeX-mode-hook
 	       (lambda ()
 		 (LaTeX-math-mode)

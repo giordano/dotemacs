@@ -55,14 +55,21 @@
 (when (display-graphic-p)
   (global-unset-key (kbd "C-z")) ;; ...disabilita C-z...
   (global-hl-line-mode 1)        ;; ...ed evidenzia la riga corrente
-  ;;; Autocompletamento.  Globalmente: (global-auto-complete-mode t).
+  ;; Autocompletamento.  Globalmente: (global-auto-complete-mode t).
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
-  (add-to-list 'load-path (concat user-emacs-directory "elpa/popup/"))
-  (add-to-list 'load-path (concat user-emacs-directory "elpa/auto-complete/"))
+  (add-to-list 'load-path (car (directory-files
+				(concat user-emacs-directory "elpa")
+				t "popup-[.0-9]+")))
+  (add-to-list 'load-path (car (directory-files
+				(concat user-emacs-directory "elpa")
+				t "auto-complete-[.0-9]+")))
   (require 'auto-complete-config)
-  (add-to-list 'ac-dictionary-directories (concat user-emacs-directory "elpa/auto-complete/dict"))
+  (add-to-list 'ac-dictionary-directories
+	       (concat (car (directory-files
+			     (concat user-emacs-directory "elpa")
+			     t "auto-complete-[.0-9]+")) "/dict"))
   (ac-config-default)
   ;; Aggiungo alcune altre modalità a quelle in cui usare di default
   ;; `auto-complete-mode'
