@@ -85,6 +85,7 @@
       ;; File dove salvare i punteggi dei giochi
       tetris-score-file (concat user-emacs-directory "tetris-scores")
       snake-score-file (concat user-emacs-directory "snake-scores"))
+(ido-mode +1)
 (tabbar-mode 1) ; attiva la visualizzazione delle schede
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
