@@ -34,13 +34,11 @@
 (add-to-list
  'load-path
  ;; Search for the directory of the ELPA `git-commit-mode'.
- (car (directory-files (concat user-emacs-directory "/elpa")
-		       t "git-commit-mode-[.0-9]+")))
+ (car (directory-files package-user-dir t "git-commit-mode-[.0-9]+")))
 (add-to-list
  'load-path
  ;; Search for the directory of the ELPA `cl-lib'.
- (car (directory-files (concat user-emacs-directory "/elpa")
-		       t "cl-lib-[.0-9]+")))
+ (car (directory-files package-user-dir t "cl-lib-[.0-9]+")))
 (setq-default fill-column 72)
 (column-number-mode)
 (setq backup-by-copying t      ; don't clobber symlinks
