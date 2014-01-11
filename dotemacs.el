@@ -59,14 +59,17 @@
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
-  (add-to-list 'load-path
-	       (car (directory-files package-user-dir t "popup-[.0-9]+")))
-  (add-to-list
-   'load-path (car (directory-files package-user-dir t "auto-complete-[.0-9]+")))
+  (add-to-list 'load-path (car (directory-files
+				(concat user-emacs-directory "elpa")
+				t "popup-[.0-9]+")))
+  (add-to-list 'load-path (car (directory-files
+				(concat user-emacs-directory "elpa")
+				t "auto-complete-[.0-9]+")))
   (require 'auto-complete-config)
   (add-to-list 'ac-dictionary-directories
-	       (concat (car (directory-files package-user-dir t
-					     "auto-complete-[.0-9]+")) "/dict"))
+	       (concat (car (directory-files
+			     (concat user-emacs-directory "elpa")
+			     t "auto-complete-[.0-9]+")) "/dict"))
   (ac-config-default)
   ;; Aggiungo alcune altre modalità a quelle in cui usare di default
   ;; `auto-complete-mode'
