@@ -168,7 +168,8 @@ the current one otherwise."
 					      LaTeX-clean-intermediate-suffixes
 					      '("\\.fdb_latexmk"))
 	   LaTeX-top-caption-list '("table")
-	   LaTeX-electric-left-right-brace t)
+	   LaTeX-electric-left-right-brace t
+	   LaTeX-fill-break-at-separators nil)
      (add-hook 'LaTeX-mode-hook
 	       (lambda ()
 		 (LaTeX-math-mode)
