@@ -73,7 +73,8 @@
 	   TeX-auto-save t
 	   TeX-parse-self t
 	   LaTeX-command-style
-	   '(("" "%(PDF)%(latex) -file-line-error %S%(PDFout)")))
+	   '(("" "%(PDF)%(latex) -file-line-error %S%(PDFout)"))
+	   TeX-quote-language-alist '(("italian" "``" "''" nil)))
      (setq-default TeX-master nil)
      (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
      (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
