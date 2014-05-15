@@ -86,6 +86,8 @@ them as well."
 	      (and
 	       ;; Is point at beginning of line?  XXX: probably unnecessary.
 	       (bolp)
+	       ;; Is the line non empty?
+	       (null (eolp))
 	       ;; Is the sixth column of the line non empty?  Exclude comments
 	       ;; and preprocessor directives.  XXX: " \\{5\\}[^ ]" instead of
 	       ;; "[^cC#].\\{4\\}[^ ]"?
