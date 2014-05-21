@@ -151,9 +151,8 @@ the current one otherwise."
   '(progn
      (setq reftex-plug-into-AUCTeX t
 	   reftex-label-alist '(AMSTeX)
-	   reftex-bibliography-commands
-	   '("bibliography" "nobibliography" "addbibresource")
-	   reftex-ref-macro-prompt nil)))
+	   reftex-ref-macro-prompt nil)
+     (add-to-list 'reftex-bibliography-commands "addbibresource")))
 
 (eval-after-load "latex"
   '(progn
