@@ -1,6 +1,6 @@
 ;;; dotemacs.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012-2013 Mosè Giordano
+;; Copyright (c) 2012-2014 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -31,8 +31,6 @@
 
 (when (>= emacs-major-version 24)
   (electric-pair-mode +1)
-  ;; non mi piace il font di default di Emacs 24
-  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10"))
   ;; in Emacs 24 vengono affiancate le etichette alle icone della
   ;; barra degli strumenti, preferisco avere solo le icone
   (setq tool-bar-style 'image)
@@ -48,7 +46,6 @@
     '(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			      ("ELPA" . "http://tromey.com/elpa/")
 			      ("marmalade" . "http://marmalade-repo.org/packages/")
-			      ("technomancy" . "http://repo.technomancy.us/emacs/")
 			      ("melpa" . "http://melpa.milkbox.net/packages/")))))
 
 ;; nelle sessioni X11...
@@ -77,6 +74,17 @@
 
 (add-to-list 'load-path user-emacs-directory)
 
+;; Change the font to "DejaVu Sans Mono-10".  Set `emacs-font' to nil to leave
+;; it as it is.  You can also set this variable to the font-size combination of
+;; your choice.
+(unless (and (boundp emacs-font)
+	     (null emacs-font))
+  (add-to-list 'default-frame-alist `(font . ,(or (and (boundp emacs-font)
+						       emacs-font)
+						  "DejaVu Sans Mono-10"))))
+
+(require 'uniquify)
+
 (setq inhibit-startup-screen t ; nasconde la schermata di avvio
       isearch-allow-scroll t
       compilation-scroll-output t
@@ -84,7 +92,17 @@
       visible-bell t
       ;; File dove salvare i punteggi dei giochi
       tetris-score-file (concat user-emacs-directory "tetris-scores")
-      snake-score-file (concat user-emacs-directory "snake-scores"))
+      snake-score-file (concat user-emacs-directory "snake-scores")
+      uniquify-buffer-name-style 'post-forward-angle-brackets
+      ;; For the followings see
+      ;; https://twiki.cern.ch/twiki/bin/view/CDS/EmacsTips
+      backup-by-copying t      ; don't clobber symlinks
+      backup-directory-alist
+      '(("." . "~/.saves"))    ; don't litter my fs tree
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)       ; use versioned backups
 (ido-mode +1)
 (tabbar-mode 1) ; attiva la visualizzazione delle schede
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
@@ -96,15 +114,6 @@
 (size-indication-mode 1) ; mostra la dimensione del buffer nella mode line
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
 (delete-selection-mode 1) ; il testo inserito sostituisce la regione selezionata
-
-;; vedi https://twiki.cern.ch/twiki/bin/view/CDS/EmacsTips
-(setq backup-by-copying t      ; don't clobber symlinks
-      backup-directory-alist
-      '(("." . "~/.saves"))    ; don't litter my fs tree
-      delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control t)       ; use versioned backups
 
 ;;; marking inserted text.  Taken from `lisp/gnus/message.el'
 (defvar mg-message-mark-insert-begin
@@ -163,6 +172,14 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 (global-set-key [f6] 'delete-trailing-whitespace) ;; oppure `whitespace-cleanup'
 (global-set-key [f7] 'check-parens)
 (global-set-key (kbd "C-c M-m") 'mg-message-mark-inserted-region)
+;; `mouse-6' and `mouse-7' are the horizontal scrolling gestures of the
+;; touchpad.  Ignore them to silence the errors thrown when using the touchpad.
+(global-set-key [mouse-6] 'ignore)
+(global-set-key [mouse-7] 'ignore)
+
+;; Map the C-/ (with / from numeric keypad) to the standard C-/.
+(define-key key-translation-map (kbd "<C-kp-divide>") (kbd "C-/"))
+
 ;; associo RET (default: `newline') a `reindent-then-newline-and-indent', se non
 ;; ti piace il fatto che reindenti la riga attuale prima di andare a capo
 ;; sostituisci con `newline-and-indent'
@@ -182,6 +199,8 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
 ;; Apre i file con estensione `.md' con `markdown-mode'
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+;; Open `*.gnuplot' files with `gnuplot-mode'
+(add-to-list 'auto-mode-alist '("\\.gnuplot$" . gnuplot-mode))
 
 ;; Cedet. Per ora lo rimuovo
 ;; (load-file "/usr/share/emacs/site-lisp/cedet-common/cedet.el")
