@@ -67,6 +67,8 @@
 	       (concat (car (directory-files
 			     (concat user-emacs-directory "elpa")
 			     t "auto-complete-[.0-9]+")) "/dict"))
+  ;; Maximize Emacs at startup, see http://emacs.stackexchange.com/a/3008/620.
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
   (ac-config-default)
   ;; Aggiungo alcune altre modalità a quelle in cui usare di default
   ;; `auto-complete-mode'
@@ -77,9 +79,9 @@
 ;; Change the font to "DejaVu Sans Mono-10".  Set `emacs-font' to nil to leave
 ;; it as it is.  You can also set this variable to the font-size combination of
 ;; your choice.
-(unless (and (boundp emacs-font)
+(unless (and (boundp 'emacs-font)
 	     (null emacs-font))
-  (add-to-list 'default-frame-alist `(font . ,(or (and (boundp emacs-font)
+  (add-to-list 'default-frame-alist `(font . ,(or (and (boundp 'emacs-font)
 						       emacs-font)
 						  "DejaVu Sans Mono-10"))))
 
