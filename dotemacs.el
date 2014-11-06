@@ -74,8 +74,6 @@
   ;; `auto-complete-mode'
   (ac-flyspell-workaround))
 
-(add-to-list 'load-path user-emacs-directory)
-
 ;; Change the font to "DejaVu Sans Mono-10".  Set `emacs-font' to nil to leave
 ;; it as it is.  You can also set this variable to the font-size combination of
 ;; your choice.
@@ -242,7 +240,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 (eval-after-load "cc-mode"
   '(add-hook 'c-mode-common-hook
 	     (lambda ()
-	       (c-toggle-auto-state 1)
+	       (c-toggle-auto-newline 1)
 	       (c-toggle-hungry-state 1)
 	       (subword-mode 1)
 	       (setq c-report-syntactic-errors t)

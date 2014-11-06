@@ -42,6 +42,8 @@
   "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook
 	  (lambda ()
+	    ;; XXX: `turn-on-eldoc-mode' is an obsolete function (as of 24.4);
+	    ;; you will have to use `eldoc-mode' at some point of time.
 	    (turn-on-eldoc-mode)
 	    (enable-paredit-mode)))
 (eval-after-load "paredit"
