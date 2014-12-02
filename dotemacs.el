@@ -67,8 +67,8 @@
 	       (concat (car (directory-files
 			     (concat user-emacs-directory "elpa")
 			     t "auto-complete-[.0-9]+")) "/dict"))
-  ;; Maximize Emacs at startup, see http://emacs.stackexchange.com/a/3008/620.
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  ;; Maximize Emacs at startup, see http://emacs.stackexchange.com/a/3017/620.
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
   (ac-config-default)
   ;; Aggiungo alcune altre modalità a quelle in cui usare di default
   ;; `auto-complete-mode'
