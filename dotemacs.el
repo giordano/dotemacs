@@ -46,7 +46,9 @@
     '(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			      ("ELPA" . "http://tromey.com/elpa/")
 			      ("marmalade" . "http://marmalade-repo.org/packages/")
-			      ("melpa" . "http://melpa.milkbox.net/packages/")))))
+			      ("melpa" . "http://melpa.milkbox.net/packages/"))))
+  (setq package-enable-at-startup nil)
+  (package-initialize))
 
 ;; nelle sessioni X11...
 (when (display-graphic-p)
@@ -103,7 +105,6 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t)       ; use versioned backups
-(ido-mode +1)
 (tabbar-mode 1) ; attiva la visualizzazione delle schede
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
@@ -259,8 +260,40 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
     (global-set-key
      (read (format "[%s-kp-%s]" prefix i))
      'digit-argument)
-    (put 
+    (put
      (read (format "%s-kp-%s" prefix i))
      'ascii-character
      (+ ?0 i))))
+
+;; Helm configuration, see https://tuhdo.github.io/helm-intro.html
+(if (null (fboundp 'helm-mode))
+    (ido-mode 1)
+  (require 'helm)
+  (require 'helm-config)
+  (helm-mode 1)
+  (helm-adaptive-mode 1)
+
+  (global-unset-key (kbd "C-x c"))
+  (global-set-key (kbd "C-c h")   #'helm-command-prefix)
+  (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+
+  (eval-after-load "helm"
+    '(progn
+       (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
+       (define-key helm-map (kbd "C-i")   #'helm-execute-persistent-action) ; make TAB works in terminal
+       (define-key helm-map (kbd "C-z")   #'helm-select-action) ; list actions using C-z
+       ))
+
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+
+  (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+	helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+	helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
+	helm-ff-file-name-history-use-recentf t
+	helm-ff-newfile-prompt-p              nil))
+
 ;;; dotemacs.el ends here
