@@ -67,7 +67,6 @@
 					(output-dvi ,auctex-dvi-viewer)
 					(output-pdf ,auctex-pdf-viewer)
 					(output-html "xdg-open"))
-	   ;; TeX-electric-escape t
 	   TeX-electric-sub-and-superscript 1
 	   TeX-debug-warnings t
 	   TeX-auto-save t
@@ -250,5 +249,6 @@ See also `mg-TeX-kpsewhich-find-file'."
   '(progn
      (add-to-list 'preview-default-preamble
 		  "\\PreviewEnvironment{tikzpicture}
-\\PreviewEnvironment{fmfgraph*}" t)))
+\\PreviewEnvironment{fmfgraph*}
+\\PreviewEnvironment*{frame}" t)))
 ;;; dotemacs-latex.el ends here
