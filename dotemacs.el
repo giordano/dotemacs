@@ -58,23 +58,18 @@
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
-  (add-to-list 'load-path (car (directory-files
-				(concat user-emacs-directory "elpa")
-				t "popup-[.0-9]+")))
-  (add-to-list 'load-path (car (directory-files
-				(concat user-emacs-directory "elpa")
-				t "auto-complete-[.0-9]+")))
-  (require 'auto-complete-config)
-  (add-to-list 'ac-dictionary-directories
-	       (concat (car (directory-files
-			     (concat user-emacs-directory "elpa")
-			     t "auto-complete-[.0-9]+")) "/dict"))
+  (when (featurep 'auto-complete)
+    (require 'auto-complete-config)
+    (add-to-list 'ac-dictionary-directories
+		 (concat (car (directory-files
+			       (concat user-emacs-directory "elpa")
+			       t "auto-complete-[.0-9]+")) "/dict"))
+    ;; Aggiungo alcune altre modalità a quelle in cui usare di default
+    ;; `auto-complete-mode'
+    (ac-flyspell-workaround))
   ;; Maximize Emacs at startup, see http://emacs.stackexchange.com/a/3017/620.
   (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-  (ac-config-default)
-  ;; Aggiungo alcune altre modalità a quelle in cui usare di default
-  ;; `auto-complete-mode'
-  (ac-flyspell-workaround))
+  (ac-config-default))
 
 ;; Change the font to "DejaVu Sans Mono-10".  Set `emacs-font' to nil to leave
 ;; it as it is.  You can also set this variable to the font-size combination of
