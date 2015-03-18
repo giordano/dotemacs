@@ -60,16 +60,10 @@
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
   (when (featurep 'auto-complete)
     (require 'auto-complete-config)
-    (add-to-list 'ac-dictionary-directories
-		 (concat (car (directory-files
-			       (concat user-emacs-directory "elpa")
-			       t "auto-complete-[.0-9]+")) "/dict"))
-    ;; Aggiungo alcune altre modalità a quelle in cui usare di default
-    ;; `auto-complete-mode'
-    (ac-flyspell-workaround))
+    (ac-flyspell-workaround)
+    (ac-config-default))
   ;; Maximize Emacs at startup, see http://emacs.stackexchange.com/a/3017/620.
-  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-  (ac-config-default))
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
 
 ;; Change the font to "DejaVu Sans Mono-10".  Set `emacs-font' to nil to leave
 ;; it as it is.  You can also set this variable to the font-size combination of
