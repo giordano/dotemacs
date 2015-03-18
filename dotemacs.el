@@ -58,7 +58,7 @@
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
-  (when (featurep 'auto-complete)
+  (when (fboundp 'auto-complete-mode)
     (require 'auto-complete-config)
     (ac-flyspell-workaround)
     (ac-config-default))
