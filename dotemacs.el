@@ -93,7 +93,9 @@
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
-      version-control t)       ; use versioned backups
+      version-control t       ; use versioned backups
+      magit-auto-revert-mode nil
+      magit-last-seen-setup-instructions "1.4.0")
 (tabbar-mode 1) ; attiva la visualizzazione delle schede
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
@@ -260,7 +262,6 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (require 'helm)
   (require 'helm-config)
   (helm-mode 1)
-  (helm-adaptive-mode 1)
 
   (global-unset-key (kbd "C-x c"))
   (global-set-key (kbd "C-c h")   #'helm-command-prefix)
