@@ -55,7 +55,7 @@
      (add-to-list 'TeX-command-list
      		  '("Latexmk" "latexmk %(-PDF) %s"
      		    TeX-run-TeX nil t
-     		    :help "Run Latexmk on file to build everything."))
+     		    :help "Run Latexmk on file to build everything.") t)
      (add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t))
      (setq TeX-newline-function 'newline-and-indent
 	   TeX-debug-bad-boxes t
