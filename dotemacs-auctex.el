@@ -1,6 +1,6 @@
 ;;; dotemacs-latex.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012-2013 Mosè Giordano
+;; Copyright (c) 2012-2015 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -100,6 +100,7 @@
 	(t
 	 (setq TeX-electric-math '("\\(" . "\\)"))
 	 (message "`TeX-insert-dollar' now inserts \"\\(...\\)\"."))))
+     (define-key TeX-mode-map (kbd "C-c e") 'TeX-error-overview)
      (define-key TeX-mode-map (kbd "s-$") 'mg-TeX-toggle-electric-math)
      (defun mg-TeX-kpsewhich-find-file (&optional name)
        "Visit file associated to NAME searching for it with kpsewhich.
@@ -166,7 +167,9 @@ the current one otherwise."
 					      '("\\.fdb_latexmk"))
 	   LaTeX-top-caption-list '("table")
 	   LaTeX-electric-left-right-brace t
-	   LaTeX-fill-break-at-separators nil)
+	   LaTeX-fill-break-at-separators nil
+	   LaTeX-includegraphics-read-file
+	   'LaTeX-includegraphics-read-file-relative)
      (add-hook 'LaTeX-mode-hook
 	       (lambda ()
 		 (LaTeX-math-mode)

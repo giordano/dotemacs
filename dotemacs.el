@@ -1,6 +1,6 @@
 ;;; dotemacs.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012-2014 Mosè Giordano
+;; Copyright (c) 2012-2015 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -94,6 +94,7 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t       ; use versioned backups
+      ediff-split-window-function 'split-window-horizontally
       magit-auto-revert-mode nil
       magit-last-seen-setup-instructions "1.4.0")
 (tabbar-mode 1) ; attiva la visualizzazione delle schede
@@ -184,7 +185,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 ;; in ambiente GTK: `C-U' seguito dal codice esadecimale.
 (global-set-key (kbd "C-s-u") 'insert-char)
 ;; Key bindings per Magit
-(global-set-key (kbd "s-m b") 'magit-blame-mode)
+(global-set-key (kbd "s-m b") 'magit-blame)
 (global-set-key (kbd "s-m s") 'magit-status)
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
@@ -264,6 +265,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (helm-mode 1)
 
   (global-unset-key (kbd "C-x c"))
+  (global-set-key (kbd "M-x")     #'helm-M-x)
   (global-set-key (kbd "C-c h")   #'helm-command-prefix)
   (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
   (global-set-key (kbd "C-x C-f") #'helm-find-files)
