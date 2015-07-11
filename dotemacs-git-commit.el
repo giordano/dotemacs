@@ -1,6 +1,6 @@
 ;;; dotemacs-git-commit.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012 Mosè Giordano
+;; Copyright (c) 2012-2015 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -31,27 +31,18 @@
 
 ;;; Code:
 
-(add-to-list
- 'load-path
- ;; Search for the directory of the ELPA `git-commit-mode'.
- (car (directory-files (concat user-emacs-directory "/elpa")
-		       t "git-commit-mode-[.0-9]+")))
-(add-to-list
- 'load-path
- ;; Search for the directory of the ELPA `cl-lib'.
- (car (directory-files (concat user-emacs-directory "/elpa")
-		       t "cl-lib-[.0-9]+")))
-(setq-default fill-column 72)
-(column-number-mode)
-(setq backup-by-copying t      ; don't clobber symlinks
+(setq tramp-ssh-controlmaster-options
+      "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no"
+      backup-by-copying t      ; don't clobber symlinks
       backup-directory-alist
       '(("." . "~/.saves"))    ; don't litter my fs tree
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
       version-control t)       ; use versioned backups
-(require 'cl-lib)
-(require 'git-commit-mode)
+(package-initialize)
+(column-number-mode)
+(global-git-commit-mode)
 (add-hook 'git-commit-mode-hook 'turn-on-auto-fill)
 
 ;;; dotemacs-git-commit.el ends here
