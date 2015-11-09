@@ -35,7 +35,6 @@
   (setq TeX-data-directory auctex-dir)
   (add-to-list 'load-path auctex-dir)
   (load "auctex.el" nil t t)
-  (add-to-list 'load-path (concat auctex-dir "preview/"))
   (load "preview-latex.el" nil t t)
   (eval-after-load "info"
     '(add-to-list 'Info-additional-directory-list (concat auctex-dir "doc/"))))

@@ -153,9 +153,10 @@ HOW optional argument determine how the label is displayed:
 
      (defun mg-fortran-echo-label-at-point ()
        "Display the label at point in the echo area."
-       (let ((label (number-at-point)))
-	 (if label
-	     (mg-fortran-display-label label 'echo))))
+       (and (eq major-mode 'fortran-mode)
+	    (let ((label (number-at-point)))
+	      (if label
+		  (mg-fortran-display-label label 'echo)))))
 
      (defcustom mg-fortran-echo-label t
        "Whether to display labels in echo area."
