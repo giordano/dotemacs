@@ -1,6 +1,6 @@
 ;;; dotemacs.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012-2015 Mosè Giordano
+;; Copyright (c) 2012-2017 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -97,12 +97,16 @@
       ediff-split-window-function 'split-window-horizontally
       magit-auto-revert-mode nil
       magit-last-seen-setup-instructions "1.4.0")
-(tabbar-mode 1) ; attiva la visualizzazione delle schede
+(unless emacs-repository-version
+  ;; On my systems, the following modes are provided by `emacs-goodies-el'
+  ;; packages from Debian repository and aren't available to Emacs compiled from
+  ;; source.
+  (tabbar-mode 1)
+  (shell-command-completion-mode 1))
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga
 (global-linum-mode 1) ; mostra i numeri di riga sulla sinistra
-(shell-command-completion-mode 1)
 (show-paren-mode 1) ; evidenzia le parentesi corrispondenti
 (size-indication-mode 1) ; mostra la dimensione del buffer nella mode line
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
@@ -239,6 +243,11 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 	       (setq c-report-syntactic-errors t)
 	       (set (make-local-variable 'electric-pair-mode) nil))))
 
+(with-eval-after-load "ess-julia"
+  (add-hook 'ess-julia-mode-hook
+	    (lambda ()
+	      (setq fill-column 92))))
+
 ;; http://lists.gnu.org/archive/html/bug-auctex/2013-04/msg00004.html
 (defun raise-client-frame ()
   (let ((wmctrl (executable-find "wmctrl")))
@@ -278,7 +287,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
        ))
 
   (when (executable-find "curl")
-    (setq helm-google-suggest-use-curl-p t))
+    (setq helm-net-prefer-curl t))
 
   (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
 	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.

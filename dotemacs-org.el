@@ -1,6 +1,6 @@
 ;;; dotemacs-org.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2013 Mosè Giordano
+;; Copyright (c) 2013, 2014, 2017 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -38,6 +38,9 @@
 	 (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
      (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
+     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\r\n,")
+     (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
      ;; Suggested key bindings from Org manual
      (global-set-key "\C-cl" 'org-store-link)

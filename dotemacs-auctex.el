@@ -1,6 +1,6 @@
 ;;; dotemacs-latex.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012-2015 Mosè Giordano
+;; Copyright (c) 2012-2017 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -70,6 +70,9 @@
 	   TeX-debug-warnings t
 	   TeX-auto-save t
 	   TeX-parse-self t
+	   TeX-ignore-warnings
+	   "^Package fixltx2e Warning: fixltx2e is not required with releases after 2015$"
+	   TeX-suppress-ignored-warnings t
 	   TeX-quote-language-alist '(("italian" "``" "''" nil)))
      (setq-default TeX-master nil)
      (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
@@ -161,17 +164,21 @@ the current one otherwise."
 	 '("tensor*" ["Before"] 2)
 	 '("indices" 1)
 	 '("indices*" 1))))
+     (defun mg/LaTeX-auto-fill-function ()
+       (if (member (LaTeX-current-environment) '("tabular"))
+	   (align-current)
+	 (do-auto-fill)))
      (setq LaTeX-clean-intermediate-suffixes (append
 					      LaTeX-clean-intermediate-suffixes
 					      '("\\.fdb_latexmk"))
-	   LaTeX-top-caption-list '("table")
+	   LaTeX-top-caption-list '("table" "table*")
 	   LaTeX-electric-left-right-brace t
-	   LaTeX-fill-break-at-separators nil
 	   LaTeX-includegraphics-read-file
 	   'LaTeX-includegraphics-read-file-relative)
      (add-hook 'LaTeX-mode-hook
 	       (lambda ()
 		 (LaTeX-math-mode)
+		 (setq auto-fill-function 'mg/LaTeX-auto-fill-function)
 		 (set (make-variable-buffer-local 'TeX-electric-math)
 		      (cons "\\(" "\\)"))
 		 ;; Override default `equation' environment, don't

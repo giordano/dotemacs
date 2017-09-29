@@ -1,6 +1,6 @@
 ;;; dotemacs-fortran.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012-2013  Mosè Giordano
+;; Copyright (c) 2012-2015  Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -120,6 +120,8 @@ HOW optional argument determine how the label is displayed:
 		  (re-search-forward
 		   (concat "^ *\\<" labelstring "\\> +")
 		   (save-excursion (fortran-end-of-subprogram) (point)))
+		  ;; XXX: this doesn't work if the actual code starts after
+		  ;; column 6.
 		  (if (<= (current-column) 6) (setq labelpos (point))))
 	       ;; If search fails issue a message.
 	       (search-failed
