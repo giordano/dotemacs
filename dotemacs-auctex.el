@@ -177,7 +177,9 @@ the current one otherwise."
 	   'LaTeX-includegraphics-read-file-relative)
      (add-hook 'LaTeX-mode-hook
 	       (lambda ()
-		 (LaTeX-math-mode)
+		 (TeX-add-symbols
+		  '("alert" TeX-arg-beamer-overlay-spec 1))
+	     (LaTeX-math-mode)
 		 (setq auto-fill-function 'mg/LaTeX-auto-fill-function)
 		 (set (make-variable-buffer-local 'TeX-electric-math)
 		      (cons "\\(" "\\)"))
@@ -254,10 +256,10 @@ See also `mg-TeX-kpsewhich-find-file'."
      (define-key LaTeX-mode-map [M-down] 'LaTeX-find-matching-end)
      (define-key LaTeX-mode-map [M-up] 'LaTeX-find-matching-begin)))
 
-(eval-after-load "preview"
-  '(progn
-     (add-to-list 'preview-default-preamble
-		  "\\PreviewEnvironment{tikzpicture}
+(with-eval-after-load "preview"
+  (add-to-list 'preview-default-preamble
+	       "\\PreviewEnvironment{tikzpicture}
 \\PreviewEnvironment{fmfgraph*}
-\\PreviewEnvironment*{frame}" t)))
+\\PreviewEnvironment*{frame}" t))
+
 ;;; dotemacs-latex.el ends here

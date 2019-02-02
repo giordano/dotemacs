@@ -41,14 +41,14 @@
     (custom-theme-set-faces
      'tsdh-dark
      '(linum ((t (:foreground "black" :background "lightgrey"))))))
-  (eval-after-load "package"
-    ;; aggiungo altri repository da cui scaricare pacchetti
-    '(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			      ("ELPA" . "http://tromey.com/elpa/")
-			      ("marmalade" . "http://marmalade-repo.org/packages/")
-			      ("melpa" . "http://melpa.milkbox.net/packages/"))))
-  (setq package-enable-at-startup nil)
-  (package-initialize))
+  ;; new repositories
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+			   ("ELPA" . "http://tromey.com/elpa/")
+			   ("marmalade" . "http://marmalade-repo.org/packages/")
+			   ("melpa" . "http://melpa.milkbox.net/packages/")))
+  (when (< emacs-major-version 27)
+    (setq package-enable-at-startup nil)
+    (package-initialize)))
 
 ;; nelle sessioni X11...
 (when (display-graphic-p)
@@ -101,12 +101,15 @@
   ;; On my systems, the following modes are provided by `emacs-goodies-el'
   ;; packages from Debian repository and aren't available to Emacs compiled from
   ;; source.
-  (tabbar-mode 1)
-  (shell-command-completion-mode 1))
+  (tabbar-mode 1))
+(shell-command-completion-mode 1)
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga
-(global-linum-mode 1) ; mostra i numeri di riga sulla sinistra
+;; mostra i numeri di riga sulla sinistra
+(if (>= emacs-major-version 25)
+    (global-display-line-numbers-mode 1)
+  (global-linum-mode 1))
 (show-paren-mode 1) ; evidenzia le parentesi corrispondenti
 (size-indication-mode 1) ; mostra la dimensione del buffer nella mode line
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
@@ -289,7 +292,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (when (executable-find "curl")
     (setq helm-net-prefer-curl t))
 
-  (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+  (setq helm-split-window-inside-p            t ; open helm buffer inside current window, not occupy whole other window
 	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
 	helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
 	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
