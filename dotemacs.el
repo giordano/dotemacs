@@ -29,6 +29,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'use-package))
+
 (when (>= emacs-major-version 24)
   (electric-pair-mode +1)
   ;; in Emacs 24 vengono affiancate le etichette alle icone della
@@ -49,6 +52,34 @@
   (when (< emacs-major-version 27)
     (setq package-enable-at-startup nil)
     (package-initialize)))
+
+;;; Install packages with `use-package'
+(use-package auto-complete
+  :ensure t)
+(use-package debbugs
+  :ensure t)
+(use-package flycheck
+  :ensure t)
+(use-package gnuplot
+  :ensure t)
+(use-package helm
+  :ensure t)
+(use-package julia-mode
+  :ensure t)
+(use-package lua-mode
+  :ensure t)
+(use-package magit
+  :ensure t)
+(use-package markdown-mode
+  :ensure t)
+(use-package shell-command
+  :ensure t
+  :config (shell-command-completion-mode 1))
+(use-package tabbar
+  :ensure t
+  :config (tabbar-mode 1))
+(use-package toml-mode
+  :ensure t)
 
 ;; nelle sessioni X11...
 (when (display-graphic-p)
@@ -97,12 +128,6 @@
       ediff-split-window-function 'split-window-horizontally
       magit-auto-revert-mode nil
       magit-last-seen-setup-instructions "1.4.0")
-(unless emacs-repository-version
-  ;; On my systems, the following modes are provided by `emacs-goodies-el'
-  ;; packages from Debian repository and aren't available to Emacs compiled from
-  ;; source.
-  (tabbar-mode 1))
-(shell-command-completion-mode 1)
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga

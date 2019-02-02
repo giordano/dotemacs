@@ -37,6 +37,9 @@
 	 (interactive)
 	 (byte-compile-file (buffer-file-name))))))
 
+(use-package paredit
+  :ensure t)
+
 ;; Paredit
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code." t)
