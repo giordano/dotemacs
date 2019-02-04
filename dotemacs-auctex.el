@@ -154,6 +154,9 @@ the current one otherwise."
 	   reftex-ref-macro-prompt nil)
      (add-to-list 'reftex-bibliography-commands "addbibresource")))
 
+(use-package ac-math
+  :ensure t)
+
 (eval-after-load "latex"
   '(progn
      (TeX-add-style-hook

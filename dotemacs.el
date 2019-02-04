@@ -63,13 +63,27 @@
 (use-package gnuplot
   :ensure t)
 (use-package helm
-  :ensure t)
+  :ensure t
+  :bind (([tab]       . helm-execute-persistent-action)
+	 ((kbd "C-i") . helm-execute-persistent-action) ; make TAB works in terminal
+	 ((kbd "C-z") . helm-select-action)) ; list actions using C-z
+  :init
+  (setq helm-split-window-inside-p            t ; open helm buffer inside current window, not occupy whole other window
+	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+	helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+	helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
+	helm-ff-file-name-history-use-recentf t
+	helm-ff-newfile-prompt-p              nil))
 (use-package julia-mode
   :ensure t)
 (use-package lua-mode
   :ensure t)
 (use-package magit
-  :ensure t)
+  :ensure t
+  :init
+  (setq magit-auto-revert-mode nil
+	magit-last-seen-setup-instructions "1.4.0"))
 (use-package markdown-mode
   :ensure t)
 (use-package shell-command
@@ -125,9 +139,7 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t       ; use versioned backups
-      ediff-split-window-function 'split-window-horizontally
-      magit-auto-revert-mode nil
-      magit-last-seen-setup-instructions "1.4.0")
+      ediff-split-window-function 'split-window-horizontally)
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga
@@ -307,22 +319,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
   (global-set-key (kbd "C-x C-f") #'helm-find-files)
 
-  (eval-after-load "helm"
-    '(progn
-       (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
-       (define-key helm-map (kbd "C-i")   #'helm-execute-persistent-action) ; make TAB works in terminal
-       (define-key helm-map (kbd "C-z")   #'helm-select-action) ; list actions using C-z
-       ))
-
   (when (executable-find "curl")
-    (setq helm-net-prefer-curl t))
-
-  (setq helm-split-window-inside-p            t ; open helm buffer inside current window, not occupy whole other window
-	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-	helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-	helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
-	helm-ff-file-name-history-use-recentf t
-	helm-ff-newfile-prompt-p              nil))
+    (setq helm-net-prefer-curl t)))
 
 ;;; dotemacs.el ends here
