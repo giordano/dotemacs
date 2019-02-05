@@ -54,6 +54,8 @@
     (package-initialize)))
 
 ;;; Install packages with `use-package'
+(use-package ac-math
+  :ensure t)
 (use-package auto-complete
   :ensure t)
 (use-package debbugs
@@ -85,6 +87,10 @@
   (setq magit-auto-revert-mode nil
 	magit-last-seen-setup-instructions "1.4.0"))
 (use-package markdown-mode
+  :ensure t)
+(use-package org
+  :ensure t)
+(use-package paredit
   :ensure t)
 (use-package shell-command
   :ensure t

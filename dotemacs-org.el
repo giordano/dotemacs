@@ -29,9 +29,6 @@
 
 ;;; Code:
 
-(use-package org
-  :ensure t)
-
 (eval-after-load "org"
   '(progn
      ;; From Org Mode manual
