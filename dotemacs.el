@@ -66,9 +66,7 @@
   :ensure t)
 (use-package helm
   :ensure t
-  :bind (([tab]       . helm-execute-persistent-action)
-	 ((kbd "C-i") . helm-execute-persistent-action) ; make TAB works in terminal
-	 ((kbd "C-z") . helm-select-action)) ; list actions using C-z
+  :bind
   :init
   (setq helm-split-window-inside-p            t ; open helm buffer inside current window, not occupy whole other window
 	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
@@ -100,6 +98,11 @@
   :config (tabbar-mode 1))
 (use-package toml-mode
   :ensure t)
+(use-package xcscope
+  :ensure t
+  :init
+  (cscope-setup)
+  (setq cscope-option-other '("-R")))
 
 ;; nelle sessioni X11...
 (when (display-graphic-p)
@@ -318,6 +321,13 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (require 'helm)
   (require 'helm-config)
   (helm-mode 1)
+
+  (eval-after-load "helm"
+    '(progn
+       (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
+       (define-key helm-map (kbd "C-i")   #'helm-execute-persistent-action) ; make TAB works in terminal
+       (define-key helm-map (kbd "C-z")   #'helm-select-action) ; list actions using C-z
+       ))
 
   (global-unset-key (kbd "C-x c"))
   (global-set-key (kbd "M-x")     #'helm-M-x)
