@@ -58,6 +58,8 @@
   :ensure t)
 (use-package auto-complete
   :ensure t)
+(use-package cmake-mode
+  :ensure t)
 (use-package debbugs
   :ensure t)
 (use-package flycheck
