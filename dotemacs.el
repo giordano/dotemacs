@@ -1,6 +1,6 @@
 ;;; dotemacs.el --- My GNU Emacs configuration
 ;;
-;; Copyright (c) 2012-2017 Mosè Giordano
+;; Copyright (c) 2012-2019 Mosè Giordano
 ;;
 ;; Author: Mosè Giordano
 
@@ -64,6 +64,8 @@
   :ensure t)
 (use-package flycheck
   :ensure t)
+(use-package forge
+  :after magit)
 (use-package gnuplot
   :ensure t)
 (use-package helm
@@ -85,7 +87,8 @@
   :ensure t
   :init
   (setq magit-auto-revert-mode nil
-	magit-last-seen-setup-instructions "1.4.0"))
+	magit-last-seen-setup-instructions "1.4.0"
+	magit-pull-or-fetch t))
 (use-package markdown-mode
   :ensure t)
 (use-package org
