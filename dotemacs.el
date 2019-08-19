@@ -78,6 +78,7 @@
 	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
 	helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
 	helm-ff-file-name-history-use-recentf t
+	helm-ff-lynx-style-map                t ; https://github.com/emacs-helm/helm/commit/60466004daf894fb390b07f9ff8d4d9283a395ef#diff-c30ab41edecc9d4b288cf5765f90e290
 	helm-ff-newfile-prompt-p              nil))
 (use-package julia-mode
   :ensure t)
