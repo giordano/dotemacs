@@ -118,4 +118,9 @@ with a prefix argument, prompt for a different date."
 (eval-after-load "ox"
   '(setq org-export-with-smart-quotes t))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (shell . t)))
+
 ;;; dotemacs-org.el ends here
