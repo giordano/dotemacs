@@ -154,7 +154,10 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t       ; use versioned backups
-      ediff-split-window-function 'split-window-horizontally)
+      ediff-split-window-function 'split-window-horizontally
+      dired-listing-switches "-alh"
+      ess-use-flymake nil
+      ess-style 'RStudio)
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga
