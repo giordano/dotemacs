@@ -301,6 +301,12 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 	       (setq c-report-syntactic-errors t)
 	       (set (make-local-variable 'electric-pair-mode) nil))))
 
+(with-eval-after-load "sh-script"
+  (add-hook 'sh-mode-hook
+	    (lambda ()
+	      ;; Don't use crazy tabs for indentation
+	      (setq indent-tabs-mode nil))))
+
 (with-eval-after-load "ess-julia"
   (add-hook 'ess-julia-mode-hook
 	    (lambda ()
