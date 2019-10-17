@@ -37,13 +37,6 @@
   ;; in Emacs 24 vengono affiancate le etichette alle icone della
   ;; barra degli strumenti, preferisco avere solo le icone
   (setq tool-bar-style 'image)
-  ;; generalmente nei terminali ho lo sfondo nero, quindi quando Emacs viene
-  ;; avviato in un terminale carico un tema adatto
-  (unless (display-graphic-p)
-    (load-theme 'tsdh-dark)
-    (custom-theme-set-faces
-     'tsdh-dark
-     '(linum ((t (:foreground "black" :background "lightgrey"))))))
   ;; new repositories
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			   ("ELPA" . "http://tromey.com/elpa/")
@@ -109,11 +102,13 @@
   :init
   (cscope-setup)
   (setq cscope-option-other '("-R")))
+(use-package zenburn-theme
+  :ensure t
+  :config (load-theme 'zenburn t))
 
 ;; nelle sessioni X11...
 (when (display-graphic-p)
   (global-unset-key (kbd "C-z")) ;; ...disabilita C-z...
-  (global-hl-line-mode 1)        ;; ...ed evidenzia la riga corrente
   ;; Autocompletamento.  Globalmente: (global-auto-complete-mode t).
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
@@ -165,6 +160,7 @@
 (if (>= emacs-major-version 25)
     (global-display-line-numbers-mode 1)
   (global-linum-mode 1))
+(global-hl-line-mode 1)
 (show-paren-mode 1) ; evidenzia le parentesi corrispondenti
 (size-indication-mode 1) ; mostra la dimensione del buffer nella mode line
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
