@@ -227,6 +227,13 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 ;; touchpad.  Ignore them to silence the errors thrown when using the touchpad.
 (global-set-key [mouse-6] 'ignore)
 (global-set-key [mouse-7] 'ignore)
+(global-set-key (kbd "C-c g t") (lambda ()
+				  (interactive)
+				  (insert (getenv "GITHUB_TOKEN"))))
+(global-set-key (kbd "C-c z") (lambda ()
+				(interactive)
+				(zlib-decompress-region (point-min) (point-max))
+				(set-buffer-modified-p nil)))
 
 ;; Map the C-/ (with / from numeric keypad) to the standard C-/.
 (define-key key-translation-map (kbd "<C-kp-divide>") (kbd "C-/"))
@@ -294,7 +301,8 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 	       (c-toggle-auto-newline 1)
 	       (c-toggle-hungry-state 1)
 	       (subword-mode 1)
-	       (setq c-report-syntactic-errors t)
+	       (setq c-report-syntactic-errors t
+		     tab-width 4)
 	       (set (make-local-variable 'electric-pair-mode) nil))))
 
 (with-eval-after-load "sh-script"
