@@ -230,10 +230,11 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 (global-set-key (kbd "C-c g t") (lambda ()
 				  (interactive)
 				  (insert (getenv "GITHUB_TOKEN"))))
-(global-set-key (kbd "C-c z") (lambda ()
-				(interactive)
-				(zlib-decompress-region (point-min) (point-max))
-				(set-buffer-modified-p nil)))
+(defun mg-decompress-buffer ()
+  (interactive)
+  (zlib-decompress-region (point-min) (point-max))
+  (set-buffer-modified-p nil))
+(global-set-key (kbd "C-c z") 'mg-decompress-buffer)
 
 ;; Map the C-/ (with / from numeric keypad) to the standard C-/.
 (define-key key-translation-map (kbd "<C-kp-divide>") (kbd "C-/"))
