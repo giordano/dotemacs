@@ -212,7 +212,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 	    (re-search-backward "`[[:alnum:]-]*\\=" (line-beginning-position) t)))
       (insert "'")
     (insert "’")))
-(define-key text-mode-map "'" 'mg-insert-typographic-apostrophe)
+;; (define-key text-mode-map "'" 'mg-insert-typographic-apostrophe)
 
 ;; Keybindings impostati da me: C-next (Ctrl + Pag ↓) per andare avanti nei
 ;; buffer, C-prior (Ctrl + Pag ↑) per tornare indietro
