@@ -75,8 +75,6 @@
 	helm-ff-newfile-prompt-p              nil))
 (use-package julia-mode
   :ensure t)
-(use-package lua-mode
-  :ensure t)
 (use-package magit
   :ensure t
   :init
