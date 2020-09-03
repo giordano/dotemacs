@@ -41,7 +41,7 @@
   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			   ("ELPA" . "http://tromey.com/elpa/")
 			   ("marmalade" . "http://marmalade-repo.org/packages/")
-			   ("melpa" . "http://melpa.milkbox.net/packages/")))
+			   ("melpa" . "https://melpa.org/packages/")))
   (when (< emacs-major-version 27)
     (setq package-enable-at-startup nil)
     (package-initialize)))
