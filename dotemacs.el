@@ -151,6 +151,8 @@
       version-control t       ; use versioned backups
       ediff-split-window-function 'split-window-horizontally
       dired-listing-switches "-alh"
+      ;; Don't use crazy tabs for indentation
+      indent-tabs-mode nil
       ess-use-flymake nil
       ess-style 'RStudio)
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
@@ -303,6 +305,8 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 	       (c-toggle-hungry-state 1)
 	       (subword-mode 1)
 	       (setq c-report-syntactic-errors t
+		     c-basic-offset 4
+                     indent-tabs-mode nil
 		     tab-width 4)
 	       (set (make-local-variable 'electric-pair-mode) nil))))
 
