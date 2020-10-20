@@ -56,6 +56,11 @@
   :ensure t)
 (use-package flycheck
   :ensure t)
+(use-package keypression
+  :ensure t
+  :custom
+  (keypression-fade-out-delay 1.0)
+  (keypression-fade-out-seconds 0.4))
 (use-package forge
   :after magit)
 (use-package gnuplot
