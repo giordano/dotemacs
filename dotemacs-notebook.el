@@ -149,7 +149,7 @@ The following %-sequences are provided:
 			  "N/A")))))
      (setq battery-mode-line-format " [Battery: %p%% %b. AC: %L. ETA: %t]"
 	   battery-load-low 20
-	   battery-status-function 'mg-battery-linux-sysfs)))
+	   battery-status-function 'battery-linux-sysfs)))
 (display-battery-mode 1)
 
 ;;; dotemacs-notebook.el ends here

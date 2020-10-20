@@ -65,32 +65,18 @@
   :after magit)
 (use-package gnuplot
   :ensure t)
-(use-package counsel
+(use-package helm
   :ensure t
-  :pin gnu
-  :after ivy
-  :config (counsel-mode))
-(use-package ivy
-  :ensure t
-  :pin gnu
-  :defer 0.1
-  :diminish
-  :custom
-  (ivy-count-format "(%d/%d) ")
-  (ivy-use-virtual-buffers t)
-  (ivy-wrap t)
-  :config (ivy-mode))
-(use-package swiper
-  :ensure t
-  :pin gnu
-  :after ivy
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper)
-	 :map swiper-map
-	 ;; I'm not sure whether I want to use `ivy-yank-word' or
-	 ;; `ivy-next-history-element' as `C-w':
-	 ;; https://github.com/abo-abo/swiper/issues/260#issuecomment-147411904
-	 ("C-w" . ivy-yank-word)))
+  :bind
+  :init
+  (setq helm-split-window-inside-p            t ; open helm buffer inside current window, not occupy whole other window
+	helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+	helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+	helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+	helm-M-x-fuzzy-match                  t ; optional fuzzy matching for helm-M-x
+	helm-ff-file-name-history-use-recentf t
+	helm-ff-lynx-style-map                t ; https://github.com/emacs-helm/helm/commit/60466004daf894fb390b07f9ff8d4d9283a395ef#diff-c30ab41edecc9d4b288cf5765f90e290
+	helm-ff-newfile-prompt-p              nil))
 (use-package julia-mode
   :ensure t)
 (use-package magit
@@ -108,6 +94,10 @@
 (use-package shell-command
   :ensure t
   :config (shell-command-completion-mode 1))
+(use-package swiper-helm
+  :ensure t
+  :bind (("C-s" . swiper-helm)
+	 ("C-r" . swiper-helm)))
 (use-package tabbar
   :ensure t
   :config (tabbar-mode 1))
@@ -354,5 +344,28 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
      (read (format "%s-kp-%s" prefix i))
      'ascii-character
      (+ ?0 i))))
+
+;; Helm configuration, see https://tuhdo.github.io/helm-intro.html
+(if (null (fboundp 'helm-mode))
+    (ido-mode 1)
+  (require 'helm)
+  (require 'helm-config)
+  (helm-mode 1)
+
+  (eval-after-load "helm"
+    '(progn
+       (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
+       (define-key helm-map (kbd "C-i")   #'helm-execute-persistent-action) ; make TAB works in terminal
+       (define-key helm-map (kbd "C-z")   #'helm-select-action) ; list actions using C-z
+       ))
+
+  (global-unset-key (kbd "C-x c"))
+  (global-set-key (kbd "M-x")     #'helm-M-x)
+  (global-set-key (kbd "C-c h")   #'helm-command-prefix)
+  (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+
+  (when (executable-find "curl")
+    (setq helm-net-prefer-curl t)))
 
 ;;; dotemacs.el ends here
