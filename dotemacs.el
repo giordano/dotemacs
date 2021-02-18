@@ -108,6 +108,8 @@
   :init
   (cscope-setup)
   (setq cscope-option-other '("-R")))
+(use-package wgrep
+  :ensure t)
 (use-package zenburn-theme
   :ensure t
   :config (load-theme 'zenburn t))
