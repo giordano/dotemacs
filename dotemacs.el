@@ -306,20 +306,32 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 ;; http://www.masteringemacs.org/articles/2011/01/19/script-files-executable-automatically/
 (add-hook 'after-save-hook
 	  'executable-make-buffer-file-executable-if-script-p)
-(eval-after-load "cc-mode"
-  '(add-hook 'c-mode-common-hook
-	     (lambda ()
-	       (c-toggle-auto-newline 1)
-	       (c-toggle-hungry-state 1)
-	       (subword-mode 1)
-	       (setq c-report-syntactic-errors t
-		     c-basic-offset 4
-                     indent-tabs-mode nil
-		     tab-width 4)
-	       (set (make-local-variable 'electric-pair-mode) nil))))
+(with-eval-after-load "cc-mode"
+  (add-hook 'c-mode-common-hook
+	    (lambda ()
+	      (c-toggle-auto-newline 1)
+	      (c-toggle-hungry-state 1)
+	      (subword-mode 1)
+	      (setq c-report-syntactic-errors t
+		    c-basic-offset 4
+                    indent-tabs-mode nil
+		    tab-width 4)
+	      (set (make-local-variable 'electric-pair-mode) nil))))
 
 (with-eval-after-load "sh-script"
   (add-hook 'sh-mode-hook
+	    (lambda ()
+	      ;; Don't use crazy tabs for indentation
+	      (setq indent-tabs-mode nil))))
+
+(with-eval-after-load "typescript-mode"
+  (add-hook 'typescript-mode-hook
+	    (lambda ()
+	      ;; Don't use crazy tabs for indentation
+	      (setq indent-tabs-mode nil))))
+
+(with-eval-after-load "js-mode"
+  (add-hook 'js-mode-hook
 	    (lambda ()
 	      ;; Don't use crazy tabs for indentation
 	      (setq indent-tabs-mode nil))))
