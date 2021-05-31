@@ -62,6 +62,7 @@
   (keypression-fade-out-delay 1.0)
   (keypression-fade-out-seconds 0.4))
 (use-package forge
+  :ensure t
   :after magit)
 (use-package gnuplot
   :ensure t)
