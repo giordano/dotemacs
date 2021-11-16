@@ -112,8 +112,10 @@ with a prefix argument, prompt for a different date."
 
      (define-key org-mode-map "'" 'mg-insert-typographic-apostrophe)))
 
-(eval-after-load "ox-publish"
-  '(load "~/repo/sito/sito"))
+(let ((site-dir "~/repo/sito/sito"))
+  (if (file-directory-p site-dir)
+      (eval-after-load "ox-publish"
+	'(load site-dir))))
 
 (eval-after-load "ox"
   '(setq org-export-with-smart-quotes t))
