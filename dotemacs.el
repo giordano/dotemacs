@@ -383,4 +383,8 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (when (executable-find "curl")
     (setq helm-net-prefer-curl t)))
 
+;; Match OTP: https://emacs.stackexchange.com/a/16584/620
+(setq tramp-password-prompt-regexp
+      "^.*\\(\\(?:adgangskode\\|contrase\\(?:\\(?:ny\\)a\\)\\|geslo\\|h\\(?:\\(?:esl\\)o\\)\\|iphasiwedi\\|l\\(?:ozinka\\)\\|m\\(?:ot de passe\\)\\|p\\(?:a\\(?:rola\\|s\\(?:ahitza\\|s\\(?: phrase\\|code\\|ord\\|phrase\\|wor[dt]\\)\\|vorto\\)\\)\\|in\\)\\|s\\(?:alasana\\|enha\\)\\|wachtwoord\\|OTP\\)\\).*: ? *")
+
 ;;; dotemacs.el ends here
