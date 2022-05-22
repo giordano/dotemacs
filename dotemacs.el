@@ -91,9 +91,9 @@
   :ensure t)
 (use-package paredit
   :ensure t)
-(use-package shell-command
-  :ensure t
-  :config (shell-command-completion-mode 1))
+;; (use-package shell-command
+;;   :ensure t
+;;   :config (shell-command-completion-mode 1))
 (use-package swiper-helm
   :ensure t
   :bind (("C-s" . swiper-helm)
@@ -103,12 +103,16 @@
   :config (tabbar-mode 1))
 (use-package toml-mode
   :ensure t)
+(use-package typescript-mode
+  :ensure t)
 (use-package xcscope
   :ensure t
   :init
   (cscope-setup)
   (setq cscope-option-other '("-R")))
 (use-package wgrep
+  :ensure t)
+(use-package yaml-mode
   :ensure t)
 (use-package zenburn-theme
   :ensure t
