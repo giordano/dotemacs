@@ -166,7 +166,10 @@
       ;; Don't use crazy tabs for indentation
       indent-tabs-mode nil
       ess-use-flymake nil
-      ess-style 'RStudio)
+      ess-style 'RStudio
+      ;; Add "OTP" to list of password prompts.  Note: do not set
+      ;; `tramp-password-prompt-regexp', it's a mess
+      password-word-equivalents (append password-word-equivalents '("OTP")))
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga
@@ -385,9 +388,5 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 
   (when (executable-find "curl")
     (setq helm-net-prefer-curl t)))
-
-;; Match OTP: https://emacs.stackexchange.com/a/16584/620
-(setq tramp-password-prompt-regexp
-      "^.*\\(\\(?:adgangskode\\|contrase\\(?:\\(?:ny\\)a\\)\\|geslo\\|h\\(?:\\(?:esl\\)o\\)\\|iphasiwedi\\|l\\(?:ozinka\\)\\|m\\(?:ot de passe\\)\\|p\\(?:a\\(?:rola\\|s\\(?:ahitza\\|s\\(?: phrase\\|code\\|ord\\|phrase\\|wor[dt]\\)\\|vorto\\)\\)\\|in\\)\\|s\\(?:alasana\\|enha\\)\\|wachtwoord\\|OTP\\)\\).*: ? *")
 
 ;;; dotemacs.el ends here
