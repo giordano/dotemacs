@@ -42,7 +42,10 @@
 			   ("melpa" . "https://melpa.org/packages/")))
   (when (< emacs-major-version 27)
     (setq package-enable-at-startup nil)
-    (package-initialize)))
+    (package-initialize))
+
+  (when (>= emacs-major-version 28)
+    (setq package-native-compile t)))
 
 ;;; Install packages with `use-package'
 (use-package ac-math
@@ -370,7 +373,6 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 (if (null (fboundp 'helm-mode))
     (ido-mode 1)
   (require 'helm)
-  (require 'helm-config)
   (helm-mode 1)
 
   (eval-after-load "helm"
