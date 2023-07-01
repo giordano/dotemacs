@@ -47,6 +47,17 @@
   (when (>= emacs-major-version 28)
     (setq package-native-compile t)))
 
+;; https://gist.github.com/idcrook/9eef475e0addc019f241850d92cfd763
+;; Useful for https://github.com/dunn/company-emoji
+;; https://www.reddit.com/r/emacs/comments/8ph0hq/i_have_converted_from_the_mac_port_to_the_ns_port/
+;; not tested with emacs26 (requires a patched Emacs version for multi-color font support)
+(when (eq system-type 'darwin)
+  (if (version< "27.0" emacs-version)
+      (set-fontset-font
+       "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+    (set-fontset-font
+     t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)))
+
 ;;; Install packages with `use-package'
 (use-package ac-math
   :ensure t)
@@ -271,8 +282,9 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 ;; in ambiente GTK: `C-U' seguito dal codice esadecimale.
 (global-set-key (kbd "C-s-u") 'insert-char)
 ;; Key bindings per Magit
-(global-set-key (kbd "s-m b") 'magit-blame)
-(global-set-key (kbd "s-m s") 'magit-status)
+(when (not (eq system-type 'darwin))
+  (global-set-key (kbd "s-m b") 'magit-blame)
+  (global-set-key (kbd "s-m s") 'magit-status))
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
