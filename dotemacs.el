@@ -143,7 +143,8 @@
   ;; Uso l'autocompletamento solo se Emacs ha una finestra grafica perché in
   ;; genere lo avvio da terminale per modifiche rapide e `auto-complete'
   ;; rallenta l'avvio e (soprattutto) la chiusura di Emacs.
-  (when (fboundp 'auto-complete-mode)
+  ;; `auto-complete-mode' makes exiting from Emacs 29+ ***horribly*** slow.
+  (when (and (fboundp 'auto-complete-mode) (< emacs-major-version 29))
     (require 'auto-complete-config)
     (ac-flyspell-workaround)
     (ac-config-default))
