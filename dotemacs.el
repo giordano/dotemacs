@@ -91,8 +91,12 @@
 	helm-ff-file-name-history-use-recentf t
 	helm-ff-lynx-style-map                t ; https://github.com/emacs-helm/helm/commit/60466004daf894fb390b07f9ff8d4d9283a395ef#diff-c30ab41edecc9d4b288cf5765f90e290
 	helm-ff-newfile-prompt-p              nil))
-(use-package julia-mode
-  :ensure t)
+(if (>= emacs-major-version 29)
+    (use-package julia-ts-mode
+      :ensure t
+      :mode "\\.jl$")
+  (use-package julia-mode
+    :ensure t))
 (use-package magit
   :ensure t
   :init
