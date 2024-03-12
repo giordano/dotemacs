@@ -405,6 +405,10 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (when (executable-find "curl")
     (setq helm-net-prefer-curl t)))
 
+;; To find git on Myria.  TODO: do this only on Myroad.
+(with-eval-after-load 'tramp
+  (push "/shared/ucl/apps/git/2.32.0/gnu-4.9.2/bin" tramp-remote-path))
+
 ;; https://stackoverflow.com/a/23382008
 (require 'ansi-color)
 (defun display-ansi-colors ()
