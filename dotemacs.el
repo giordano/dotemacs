@@ -405,4 +405,10 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (when (executable-find "curl")
     (setq helm-net-prefer-curl t)))
 
+;; https://stackoverflow.com/a/23382008
+(require 'ansi-color)
+(defun display-ansi-colors ()
+  (interactive)
+  (ansi-color-apply-on-region (point-min) (point-max)))
+
 ;;; dotemacs.el ends here
