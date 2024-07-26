@@ -32,10 +32,8 @@
 ;; Se AUCTeX non è già caricato, caricalo da `auctex-dir'.  In `.emacs' imposta
 ;; il suo valore al percorso in cui si trova AUCTeX.
 (when (and (boundp 'auctex-dir) (not (featurep 'tex-site)))
-  (setq TeX-data-directory auctex-dir)
   (add-to-list 'load-path auctex-dir)
-  (load "auctex.el" nil t t)
-  (load "preview-latex.el" nil t t)
+  (load "auctex-autoloads.el" nil t t)
   (eval-after-load "info"
     '(add-to-list 'Info-additional-directory-list (concat auctex-dir "doc/"))))
 
