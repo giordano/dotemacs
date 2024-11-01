@@ -31,11 +31,15 @@
 
 ;; Se AUCTeX non è già caricato, caricalo da `auctex-dir'.  In `.emacs' imposta
 ;; il suo valore al percorso in cui si trova AUCTeX.
-(when (and (boundp 'auctex-dir) (not (featurep 'tex-site)))
-  (add-to-list 'load-path auctex-dir)
-  (load "auctex-autoloads.el" nil t t)
-  (eval-after-load "info"
-    '(add-to-list 'Info-additional-directory-list (concat auctex-dir "doc/"))))
+(if (and (boundp 'auctex-dir) (not (featurep 'tex-site)))
+    (progn
+      (add-to-list 'load-path auctex-dir)
+      (load "auctex-autoloads.el" nil t t)
+      (eval-after-load "info"
+	'(add-to-list 'Info-additional-directory-list (concat auctex-dir "doc/"))))
+  (use-package tex
+    :ensure auctex)
+  )
 
 (eval-after-load "tex"
   '(progn
