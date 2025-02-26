@@ -94,6 +94,9 @@
 (use-package julia-mode
   :ensure t
   :mode "\\.jl$")
+(use-package llvm-ts-mode
+  :ensure t
+  :mode "\\.ll$")
 (use-package magit
   :ensure t
   :init
@@ -366,6 +369,12 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (add-hook 'ess-julia-mode-hook
 	    (lambda ()
 	      (setq fill-column 92))))
+
+(with-eval-after-load "treesitter"
+  (add-to-list
+   'treesit-language-source-alist
+   '(llvm "https://github.com/benwilliamgraham/tree-sitter-llvm"))
+  (treesit-install-language-grammar 'llvm))
 
 ;; http://lists.gnu.org/archive/html/bug-auctex/2013-04/msg00004.html
 (defun raise-client-frame ()
