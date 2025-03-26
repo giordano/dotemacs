@@ -185,7 +185,9 @@
       ess-style 'RStudio
       ;; Add "OTP" to list of password prompts.  Note: do not set
       ;; `tramp-password-prompt-regexp', it's a mess
-      password-word-equivalents (append password-word-equivalents '("OTP")))
+      password-word-equivalents (append password-word-equivalents '("OTP"))
+      auto-revert-remote-files t
+      )
 (column-number-mode 1) ; mostra i numeri di riga e colonna nella mode line
 (display-time-mode 1) ; mostra l'orario nella mode line
 (setq-default fill-column 80) ; imposta il numero massimo di caratteri per riga
