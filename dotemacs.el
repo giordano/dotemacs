@@ -417,6 +417,30 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
 
+;; https://github.com/CliMA/Oceananigans.jl/pull/5145#issuecomment-3756642771
+(defun mg-cleanup-whitespace (dir)
+  (interactive "D")
+  (dolist (file (directory-files-recursively dir "\\.\\(jl\\|md\\|sh\\)$"))
+    (when (file-regular-p file)
+      (with-temp-buffer
+	(insert-file-contents file)
+	;; Force LF line ending
+	(set-buffer-file-coding-system 'unix)
+	;; Add final newline in case it's missing.  If it's
+	;; extra it'll be cleaned up later.
+	(goto-char (point-max))
+	(insert "\n")
+	;; Replace non-breaking spaces
+	(save-excursion
+          (goto-char (point-min))
+          (while (search-forward " " nil t)
+            (replace-match " " nil t)))
+	;; Untabify
+	(untabify (point-min) (point-max))
+	;; Clean up all trailing whitespaces
+	(delete-trailing-whitespace)
+	(write-region (point-min) (point-max) file)))))
+
 ;; JETLS configuration https://aviatesk.github.io/JETLS.jl/dev/#Emacs
 (with-eval-after-load 'eglot
   (let ((jetls (expand-file-name "~/.julia/bin/jetls")))
