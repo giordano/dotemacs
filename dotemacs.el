@@ -417,4 +417,17 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
 
+;; JETLS configuration https://aviatesk.github.io/JETLS.jl/dev/#Emacs
+(with-eval-after-load 'eglot
+  (let ((jetls (expand-file-name "~/.julia/bin/jetls")))
+    (when (file-exists-p jetls)
+      (add-to-list 'eglot-server-programs
+		   `(((julia-mode :language-id "julia")
+		      (julia-ts-mode :language-id "julia"))
+		     ,jetls
+		     "--threads=auto"
+		     "--"
+		     "--socket"
+		     :autoport)))))
+
 ;;; dotemacs.el ends here
