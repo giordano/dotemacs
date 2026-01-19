@@ -67,6 +67,9 @@
   :ensure t)
 (use-package debbugs
   :ensure t)
+(use-package dockerfile-mode
+  :ensure t
+  :mode "^Dockerfile$")
 (use-package flycheck
   :ensure t)
 (use-package keypression
