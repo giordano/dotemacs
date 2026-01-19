@@ -294,7 +294,7 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
 ;; Key bindings per Magit
 (when (not (eq system-type 'darwin))
   (global-set-key (kbd "s-m b") 'magit-blame)
-  (global-set-key (kbd "s-m s") 'magit-status))
+  (global-set-key (kbd "C-x g") 'magit-status))
 
 ;; Apre i file con estensione `.m' con `matlab-mode'
 (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
