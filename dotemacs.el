@@ -459,11 +459,10 @@ If VERBATIM, use slrn style verbatim marks (\"#v+\" and \"#v-\")."
     (when (file-exists-p jetls)
       (add-to-list 'eglot-server-programs
 		   `(((julia-mode :language-id "julia")
-		      (julia-ts-mode :language-id "julia"))
-		     ,jetls
-		     "--threads=auto"
-		     "--"
-		     "--socket"
-		     :autoport)))))
+                      (julia-ts-mode :language-id "julia"))
+                     ,jetls
+                     "serve"
+                     "--socket"
+                     :autoport)))))
 
 ;;; dotemacs.el ends here
